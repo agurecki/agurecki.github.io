@@ -1,0 +1,57 @@
+<html>
+<body>
+<h1>
+This is my JavaScript test.
+</h1>
+
+<script language=javascript>
+function convertUnits(){
+let inputnumber = document.getElementById("inputnumber").value
+let inputunits = document.getElementById("units").value
+let outputnumber = 0
+let coversion = 0
+
+if(inputunits == "mm"){
+conversion = .001
+} 
+
+if(inputunits == "in"){
+conversion = 0.0254
+} 
+
+if(inputunits == "ft"){
+conversion = .3048
+}
+
+if(inputunits == "mi"){
+conversion = 1609.34
+}
+outputnumber = inputnumber * conversion
+
+document.getElementById("outputvalue").innerHTML= outputnumber + " Meters"
+
+}
+</script>
+
+
+<h1>
+Unit Converter
+</h1>
+Input value: <Input type="text" id = "inputnumber"><br>
+Input units:
+  <select id="units" names = "units">
+  
+  <option value="in">Inches</option>
+  <option value="mm">Milimeters</option>
+  <option value="mi">Miles</option>
+  <option value="ft">Feet</option>
+    </select>
+    <br>
+    <input type="submit" onclick="convertUnits()">
+    
+    <p id = "outputvalue"</p>
+  
+  
+
+</body>
+</html>
