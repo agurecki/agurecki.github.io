@@ -64,6 +64,8 @@
         }
     </style>
 </head>
+<!DOCTYPE html>
+<html>
 <body>
 
 <script language="javascript">
@@ -128,30 +130,34 @@ function convertUnits() {
         `${inputnumber} ${inputunits} = ${outputnumber.toFixed(4)} ${outputunits}`;
 }
 </script>
-<div class="container">
-    <h1>Unit Converter</h1>
-    Input value: <input type="text" id="inputnumber"><br>
-    Input units:
-    <select id="units" names="units">
-        <option value="mm">Millimeters</option>
-        <option value="in">Inches</option>
-        <option value="ft">Feet</option>
-        <option value="m">Meters</option>
-        <option value="mi">Miles</option>
-    </select>
-    <br>
-    Output units:
-    <select id="outputunits" names="units">
-        <option value="mm">Millimeters</option>
-        <option value="in">Inches</option>
-        <option value="ft">Feet</option>
-        <option value="m">Meters</option>
-        <option value="mi">Miles</option>
-    </select>
-    <br>
-    <input type="submit" onclick="convertUnits()">
-    <p id="outputvalue"></p>
-</div>
+
+<h1>Unit Converter</h1>
+
+<!-- Input field and dropdowns -->
+Input value: <input type="text" id="inputnumber" placeholder="Enter a number"><br><br>
+Input units:
+<select id="inputunits">
+    <option value="mm">Millimeters</option>
+    <option value="in">Inches</option>
+    <option value="ft">Feet</option>
+    <option value="m">Meters</option>
+    <option value="mi">Miles</option>
+</select><br><br>
+
+Output units:
+<select id="outputunits">
+    <option value="mm">Millimeters</option>
+    <option value="in">Inches</option>
+    <option value="ft">Feet</option>
+    <option value="m">Meters</option>
+    <option value="mi">Miles</option>
+</select><br><br>
+
+<!-- Button to perform conversion -->
+<input type="submit" onclick="convertUnits()" value="Convert">
+
+<!-- Output -->
+<p id="outputvalue"></p>
 
 </body>
 </html>
