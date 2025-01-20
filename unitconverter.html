@@ -1,57 +1,151 @@
+<!DOCTYPE html>
 <html>
+<head>
+    <style>
+        /* General body styling */
+        body {
+            background-color: #5C9E76; /* Sets background color */
+            font-family: Arial, sans-serif; /* Sets font */
+            color: white; /* Text color */
+            padding: 20px; /* Adds some padding around the content */
+        }
+
+        /* Styling for the input fields and button */
+        input[type="text"], select {
+            padding: 8px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 2px solid #fff;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #fff; /* White background for the button */
+            color: #5C9E76; /* Text color matches the background */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #4b7f5e; /* Darker shade on hover */
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+        }
+
+        p {
+            font-size: 18px;
+            text-align: center;
+            color: white;
+        }
+
+        /* Styling the dropdown options */
+        select {
+            background-color: #fff;
+            color: #5C9E76;
+        }
+    </style>
+</head>
 <body>
-<h1>
-This is my JavaScript test.
-</h1>
 
-<script language=javascript>
-function convertUnits(){
-let inputnumber = document.getElementById("inputnumber").value
-let inputunits = document.getElementById("units").value
-let outputnumber = 0
-let coversion = 0
+<script language="javascript">
+function convertUnits() {
+    let inputnumber = parseFloat(document.getElementById("inputnumber").value);
+    let inputunits = document.getElementById("inputunits").value;
+    let outputunits = document.getElementById("outputunits").value;
+    let conversion = 0;
+    let outputnumber = 0;
 
-if(inputunits == "mm"){
-conversion = .001
-} 
 
-if(inputunits == "in"){
-conversion = 0.0254
-} 
+    if (inputunits == "mm" && outputunits == "in") {
+        conversion = 0.0393701;
+    } else if (inputunits == "mm" && outputunits == "ft") {
+        conversion = 0.00328084;
+    } else if (inputunits == "mm" && outputunits == "m") {
+        conversion = 0.001;
+    } else if (inputunits == "mm" && outputunits == "mi") {
+        conversion = 6.2137e-7;
+    } else if (inputunits == "in" && outputunits == "mm") {
+        conversion = 25.4;
+    } else if (inputunits == "in" && outputunits == "ft") {
+        conversion = 0.0833333;
+    } else if (inputunits == "in" && outputunits == "m") {
+        conversion = 0.0254;
+    } else if (inputunits == "in" && outputunits == "mi") {
+        conversion = 1.5783e-5;
+    } else if (inputunits == "ft" && outputunits == "mm") {
+        conversion = 304.8;
+    } else if (inputunits == "ft" && outputunits == "in") {
+        conversion = 12;
+    } else if (inputunits == "ft" && outputunits == "m") {
+        conversion = 0.3048;
+    } else if (inputunits == "ft" && outputunits == "mi") {
+        conversion = 0.000189394;
+    } else if (inputunits == "m" && outputunits == "mm") {
+        conversion = 1000;
+    } else if (inputunits == "m" && outputunits == "in") {
+        conversion = 39.3701;
+    } else if (inputunits == "m" && outputunits == "ft") {
+        conversion = 3.28084;
+    } else if (inputunits == "m" && outputunits == "mi") {
+        conversion = 0.000621371;
+    } else if (inputunits == "mi" && outputunits == "mm") {
+        conversion = 1.609e+6;
+    } else if (inputunits == "mi" && outputunits == "in") {
+        conversion = 63360;
+    } else if (inputunits == "mi" && outputunits == "ft") {
+        conversion = 5280;
+    } else if (inputunits == "mi" && outputunits == "m") {
+        conversion = 1609.34;
+    } else if (inputunits == outputunits) {
+        conversion = 1;
+    } else {
+        document.getElementById("outputvalue").innerHTML = "Conversion not available.";
+        return;
+    }
 
-if(inputunits == "ft"){
-conversion = .3048
-}
-
-if(inputunits == "mi"){
-conversion = 1609.34
-}
-outputnumber = inputnumber * conversion
-
-document.getElementById("outputvalue").innerHTML= outputnumber + " Meters"
-
+    // Calculate and display result
+    outputnumber = inputnumber * conversion;
+    document.getElementById("outputvalue").innerHTML = 
+        `${inputnumber} ${inputunits} = ${outputnumber.toFixed(4)} ${outputunits}`;
 }
 </script>
 
+<h1>Unit Converter</h1>
 
-<h1>
-Unit Converter
-</h1>
-Input value: <Input type="text" id = "inputnumber"><br>
+<!-- Input field and dropdowns -->
+Input value: <input type="text" id="inputnumber" placeholder="Enter a number"><br><br>
 Input units:
-  <select id="units" names = "units">
-  
-  <option value="in">Inches</option>
-  <option value="mm">Milimeters</option>
-  <option value="mi">Miles</option>
-  <option value="ft">Feet</option>
-    </select>
-    <br>
-    <input type="submit" onclick="convertUnits()">
-    
-    <p id = "outputvalue"</p>
-  
-  
+<select id="inputunits">
+    <option value="mm">Millimeters</option>
+    <option value="in">Inches</option>
+    <option value="ft">Feet</option>
+    <option value="m">Meters</option>
+    <option value="mi">Miles</option>
+</select><br><br>
+
+Output units:
+<select id="outputunits">
+    <option value="mm">Millimeters</option>
+    <option value="in">Inches</option>
+    <option value="ft">Feet</option>
+    <option value="m">Meters</option>
+    <option value="mi">Miles</option>
+</select><br><br>
+
+<!-- Button to perform conversion -->
+<input type="submit" onclick="convertUnits()" value="Convert">
+
+<!-- Output -->
+<p id="outputvalue"></p>
 
 </body>
 </html>
+
+
