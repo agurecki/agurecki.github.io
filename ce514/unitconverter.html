@@ -25,9 +25,9 @@
         }
 
         /* Styling for the input fields and button */
-        input[type="text"], select {
-            padding: 8px;
-            margin: 10px 0;
+        input[type="text"], select, input[type="submit"] {
+            padding: 10px;
+            margin: 10px 0; /* Adds margin between elements */
             font-size: 16px;
             border: 2px solid #fff;
             border-radius: 4px;
@@ -35,13 +35,9 @@
         }
 
         input[type="submit"] {
-            padding: 10px 20px;
             background-color: #fff; /* White background for the button */
             color: #5C9E76; /* Text color matches the background */
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            width: 100%; /* Makes the button take up full width */
         }
 
         input[type="submit"]:hover {
@@ -64,8 +60,6 @@
         }
     </style>
 </head>
-<!DOCTYPE html>
-<html>
 <body>
 
 <script language="javascript">
@@ -131,33 +125,35 @@ function convertUnits() {
 }
 </script>
 
-<h1>Unit Converter</h1>
+<div class="container">
+    <h1>Unit Converter</h1>
 
-<!-- Input field and dropdowns -->
-Input value: <input type="text" id="inputnumber" placeholder="Enter a number"><br><br>
-Input units:
-<select id="inputunits">
-    <option value="mm">Millimeters</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="m">Meters</option>
-    <option value="mi">Miles</option>
-</select><br><br>
+    <!-- Input field and dropdowns -->
+    Input value: <input type="text" id="inputnumber" placeholder="Enter a number"><br><br>
+    Input units:
+    <select id="inputunits">
+        <option value="mm">Millimeters</option>
+        <option value="in">Inches</option>
+        <option value="ft">Feet</option>
+        <option value="m">Meters</option>
+        <option value="mi">Miles</option>
+    </select><br><br>
 
-Output units:
-<select id="outputunits">
-    <option value="mm">Millimeters</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="m">Meters</option>
-    <option value="mi">Miles</option>
-</select><br><br>
+    Output units:
+    <select id="outputunits">
+        <option value="mm">Millimeters</option>
+        <option value="in">Inches</option>
+        <option value="ft">Feet</option>
+        <option value="m">Meters</option>
+        <option value="mi">Miles</option>
+    </select><br><br>
 
-<!-- Button to perform conversion -->
-<input type="submit" onclick="convertUnits()" value="Convert">
+    <!-- Button to perform conversion -->
+    <input type="submit" onclick="convertUnits()" value="Convert"><br><br>
 
-<!-- Output -->
-<p id="outputvalue"></p>
+    <!-- Output -->
+    <p id="outputvalue"></p>
+</div>
 
 </body>
 </html>
