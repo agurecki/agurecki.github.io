@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            margin: 0;
+            margin: 1in; /* Adds a 1-inch margin to the entire webpage */
             padding: 0;
             background-color: #f4f4f4;
             color: #333;
@@ -22,12 +22,16 @@
         .container {
             padding: 20px;
         }
+        /* Ensures sections are tabbed in */
+        .container section {
+            padding-left: 40px; /* Adds padding to the left side of all sections */
+            margin-bottom: 20px; /* Adds space between sections */
+        }
         img {
-    max-width: 50%; /* Ensures the image scales with the container */
-    height: auto;    /* Maintains aspect ratio automatically */
-    aspect-ratio: 4 / 6; /* Ensures the image retains a 3:5 ratio */
-    object-fit: cover; /* Ensures the image fills the defined space proportionally */
-
+            max-width: 50%; /* Ensures the image scales with the container */
+            height: auto;    /* Maintains aspect ratio automatically */
+            aspect-ratio: 4 / 6; /* Ensures the image retains a 3:5 ratio */
+            object-fit: cover; /* Ensures the image fills the defined space proportionally */
         }
         .gallery img {
             margin: 10px;
@@ -58,44 +62,44 @@
                 <a href="https://www.instagram.com/amb_birding" target="_blank">Bird Photography Instagram</a>
             </div>
         </section>
-    </div>
-
-            <section>
+        
+        <section>
             <h2>Assignments</h2>
             <div class="links">
                 <a href="https://agurecki.github.io/ce514/ce514.html" target="_blank">CE 514 Homepage</a>
                 <a href="https://agurecki.github.io/ce514/unitconverter.html" target="_blank">Unit Converter</a>
             </div>
         </section>
-    </div>
-    
+        
         <section>
             <h2>About Me</h2>
             <p>Hello! My name is Amber, and I’m currently a PhD student in Civil Engineering. I'm originally from New Hampshire and love the east coast! I've been married to my husband for over 3 years. This summer we adopted a kitten and named him Rocky after the character in Project Hail Mary (iykyk). I enjoy being outdoors, birding/bird photography, and traveling. I’m passionate about air quality research and sustainability!</p>
             <img src="IMG_5395.jpeg" alt="Me and my husband in Belgium">
         </section>
+
         <section>
             <h2>Interests</h2>
             <figure>
-    <img src="IMG_5764.jpeg" alt="Hiking in the Tetons">
-    <figcaption>Hiking in the Tetons</figcaption>
-</figure>
+                <img src="IMG_5764.jpeg" alt="Hiking in the Tetons">
+                <figcaption>Hiking in the Tetons</figcaption>
+            </figure>
 
-<figure>
-    <img src="IMG_5209.jpeg" alt="Rocky, our 8-month-old kitten">
-    <figcaption>Rocky, our 8-month-old kitten</figcaption>
-</figure>
+            <figure>
+                <img src="IMG_5209.jpeg" alt="Rocky, our 8-month-old kitten">
+                <figcaption>Rocky, our 8-month-old kitten</figcaption>
+            </figure>
 
-<figure>
-    <img src="DSC06125.jpeg" alt="Bald Eagle">
-    <figcaption>Bald Eagle</figcaption>
-</figure>
+            <figure>
+                <img src="DSC06125.jpeg" alt="Bald Eagle">
+                <figcaption>Bald Eagle</figcaption>
+            </figure>
 
-<figure>
-    <img src="DSC05912.jpeg" alt="Great Horned Owl">
-    <figcaption>Great Horned Owl</figcaption>
-</figure>
+            <figure>
+                <img src="DSC05912.jpeg" alt="Great Horned Owl">
+                <figcaption>Great Horned Owl</figcaption>
+            </figure>
         </section>
+
     </div>
 </body>
 </html>
