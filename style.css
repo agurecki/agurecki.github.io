@@ -75,7 +75,18 @@
             font-size: 1.2em;
             line-height: 1.5;
         }
-
+        /* Image Styling*/
+      
+        img {
+            max-width: 50%;
+            height: auto;
+            aspect-ratio: 4 / 6;
+            object-fit: cover;
+        }
+        .gallery img {
+            margin: 10px;
+            border: 2px solid #ddd;
+        }
         /* Footer Styling */
         footer {
             text-align: center;
