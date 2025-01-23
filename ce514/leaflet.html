@@ -27,19 +27,14 @@
     <!-- Add Leaflet JS for map functionality -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Create a map centered at Stratham, NH
-        var map = L.map('map').setView([43.0094, -70.9399], 13);
+var map = L.map('map').setView([43.0094, -70.9399], 13);
 
-        // Add a tile layer (background map) from OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-        // Add a marker at Stratham, NH location
-        var marker = L.marker([43.0094, -70.9399]).addTo(map);
-
-        // Add a popup to the marker
-        marker.bindPopup("<b>Stratham, NH</b><br>This is my hometown!").openPopup();
+var marker = L.marker([43.0094, -70.9399]).addTo(map);
+marker.bindPopup("<b>Stratham, NH</b><br>This is my hometown!").openPopup();
     </script>
 </body>
 </html>
