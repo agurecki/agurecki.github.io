@@ -4,103 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amber Allen's Unit Converter</title>
-<link rel="stylesheet" href="../style.css">
-
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
-<script language="javascript">
-function convertUnits() {
-    let inputnumber = parseFloat(document.getElementById("inputnumber").value);
-    let inputunits = document.getElementById("inputunits").value;
-    let outputunits = document.getElementById("outputunits").value;
-    let conversion = 0;
-    let outputnumber = 0;
-
-    // Conversion logic
-    if (inputunits == "mm" && outputunits == "in") {
-        conversion = 0.0393701;
-    } else if (inputunits == "mm" && outputunits == "ft") {
-        conversion = 0.00328084;
-    } else if (inputunits == "mm" && outputunits == "m") {
-        conversion = 0.001;
-    } else if (inputunits == "mm" && outputunits == "mi") {
-        conversion = 6.2137e-7;
-    } else if (inputunits == "in" && outputunits == "mm") {
-        conversion = 25.4;
-    } else if (inputunits == "in" && outputunits == "ft") {
-        conversion = 0.0833333;
-    } else if (inputunits == "in" && outputunits == "m") {
-        conversion = 0.0254;
-    } else if (inputunits == "in" && outputunits == "mi") {
-        conversion = 1.5783e-5;
-    } else if (inputunits == "ft" && outputunits == "mm") {
-        conversion = 304.8;
-    } else if (inputunits == "ft" && outputunits == "in") {
-        conversion = 12;
-    } else if (inputunits == "ft" && outputunits == "m") {
-        conversion = 0.3048;
-    } else if (inputunits == "ft" && outputunits == "mi") {
-        conversion = 0.000189394;
-    } else if (inputunits == "m" && outputunits == "mm") {
-        conversion = 1000;
-    } else if (inputunits == "m" && outputunits == "in") {
-        conversion = 39.3701;
-    } else if (inputunits == "m" && outputunits == "ft") {
-        conversion = 3.28084;
-    } else if (inputunits == "m" && outputunits == "mi") {
-        conversion = 0.000621371;
-    } else if (inputunits == "mi" && outputunits == "mm") {
-        conversion = 1.609e+6;
-    } else if (inputunits == "mi" && outputunits == "in") {
-        conversion = 63360;
-    } else if (inputunits == "mi" && outputunits == "ft") {
-        conversion = 5280;
-    } else if (inputunits == "mi" && outputunits == "m") {
-        conversion = 1609.34;
-    } else if (inputunits == outputunits) {
-        conversion = 1;
-    } else {
-        document.getElementById("outputvalue").innerHTML = "Conversion not available.";
-        return;
-    }
-
-    // Calculate and display result
-    outputnumber = inputnumber * conversion;
-    document.getElementById("outputvalue").innerHTML = 
-        `${inputnumber} ${inputunits} = ${outputnumber.toFixed(4)} ${outputunits}`;
-}
-</script>
-
 <div class="container">
-    <h1>Unit Converter</h1>
+    <header>
+        <h1>Unit Converter</h1>
+    </header>
 
-    <!-- Input field and dropdowns -->
-    Input value: <input type="text" id="inputnumber" placeholder="Enter a number"><br><br>
-    Input units:
+    <p>Input value: <input type="text" id="inputnumber" placeholder="Enter a number"></p>
+
+    <p>Input units:
     <select id="inputunits">
         <option value="mm">Millimeters</option>
         <option value="in">Inches</option>
         <option value="ft">Feet</option>
         <option value="m">Meters</option>
         <option value="mi">Miles</option>
-    </select><br><br>
+    </select>
+    </p>
 
-    Output units:
+    <p>Output units:
     <select id="outputunits">
         <option value="mm">Millimeters</option>
         <option value="in">Inches</option>
         <option value="ft">Feet</option>
         <option value="m">Meters</option>
         <option value="mi">Miles</option>
-    </select><br><br>
+    </select>
+    </p>
 
-    <!-- Button to perform conversion -->
-    <input type="submit" onclick="convertUnits()" value="Convert"><br><br>
-
-    <!-- Output -->
+    <input type="submit" onclick="convertUnits()" value="Convert">
+    
     <p id="outputvalue"></p>
 </div>
+
+<script language="javascript">
+    function convertUnits() {
+        let inputnumber = parseFloat(document.getElementById("inputnumber").value);
+        let inputunits = document.getElementById("inputunits").value;
+        let outputunits = document.getElementById("outputunits").value;
+        let conversion = 0;
+        let outputnumber = 0;
+
+        // Conversion logic
+        if (inputunits == "mm" && outputunits == "in") {
+            conversion = 0.0393701;
+        } else if (inputunits == "mm" && outputunits == "ft") {
+            conversion = 0.00328084;
+        } else if (inputunits == "mm" && outputunits == "m") {
+            conversion = 0.001;
+        } else if (inputunits == "mm" && outputunits == "mi") {
+            conversion = 6.2137e-7;
+        } else if (inputunits == "in" && outputunits == "mm") {
+            conversion = 25.4;
+        } else if (inputunits == "in" && outputunits == "ft") {
+            conversion = 0.0833333;
+        } else if (inputunits == "in" && outputunits == "m") {
+            conversion = 0.0254;
+        } else if (inputunits == "in" && outputunits == "mi") {
+            conversion = 1.5783e-5;
+        } else if (inputunits == "ft" && outputunits == "mm") {
+            conversion = 304.8;
+        } else if (inputunits == "ft" && outputunits == "in") {
+            conversion = 12;
+        } else if (inputunits == "ft" && outputunits == "m") {
+            conversion = 0.3048;
+        } else if (inputunits == "ft" && outputunits == "mi") {
+            conversion = 0.000189394;
+        } else if (inputunits == "m" && outputunits == "mm") {
+            conversion = 1000;
+        } else if (inputunits == "m" && outputunits == "in") {
+            conversion = 39.3701;
+        } else if (inputunits == "m" && outputunits == "ft") {
+            conversion = 3.28084;
+        } else if (inputunits == "m" && outputunits == "mi") {
+            conversion = 0.000621371;
+        } else if (inputunits == "mi" && outputunits == "mm") {
+            conversion = 1.609e+6;
+        } else if (inputunits == "mi" && outputunits == "in") {
+            conversion = 63360;
+        } else if (inputunits == "mi" && outputunits == "ft") {
+            conversion = 5280;
+        } else if (inputunits == "mi" && outputunits == "m") {
+            conversion = 1609.34;
+        } else if (inputunits == outputunits) {
+            conversion = 1;
+        } else {
+            document.getElementById("outputvalue").innerHTML = "Conversion not available.";
+            return;
+        }
+
+        // Calculate and display result
+        outputnumber = inputnumber * conversion;
+        document.getElementById("outputvalue").innerHTML = 
+            `${inputnumber} ${inputunits} = ${outputnumber.toFixed(4)} ${outputunits}`;
+    }
+</script>
 
 </body>
 </html>
