@@ -8,30 +8,31 @@
 
     /* Body Styling */
     body {
-        font-family: 'Georgia', serif;
+        font-family: 'Georgia', serif; /* Georgia for all body text */
         background-color: #f4f4f4;
         color: #333;
         line-height: 1.6;
         padding: 20px;
     }
 
-/* Header Styling */
-header {
-    text-align: center;
-    background-color: #5C9E76;
-    color: white;
-    padding: 20px;
-}
+    /* Header Styling */
+    header {
+        text-align: center; /* Center all header content */
+        background-color: #5C9E76;
+        color: white;
+        padding: 20px;
+    }
 
-header h1, header h2, section h2 {
-    font-family: 'Impact', sans-serif; /* Impact font for headers */
-    font-size: 2.5em;
-    margin-bottom: 10px;
-}
+    header h1, header h2, section h2 {
+        font-family: 'Impact', sans-serif; /* Impact for headers */
+        font-size: 2.5em;
+        text-align: center; /* Center the headers */
+        margin-bottom: 10px;
+    }
 
     header p {
         font-family: 'Georgia', serif;
-        font-size: 2.0em;
+        font-size: 1.2em;
     }
 
     /* Navigation Bar Styling */
@@ -68,22 +69,27 @@ header h1, header h2, section h2 {
     }
 
     section h2 {
-        text-align: center;
-        font-family: Georgia, serif;
+        font-family: 'Impact', sans-serif; /* Impact for section headers */
         font-size: 2.5em;
         margin-bottom: 15px;
     }
 
     section p {
-        font-family: Georgia, serif;
+        font-family: 'Georgia', serif;
         font-size: 1.2em;
         line-height: 1.5;
     }
 
     /* Gallery Styling */
+    .gallery {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center the images */
+    }
+
     .gallery figure {
-        display: block; /* Ensure each figure is treated as a block element */
         margin-bottom: 20px; /* Add spacing after each figure */
+        text-align: center; /* Center figcaption */
     }
 
     .gallery img {
@@ -93,6 +99,19 @@ header h1, header h2, section h2 {
         object-fit: cover;
         margin: 10px 0;
         border: 2px solid #ddd;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery img:hover {
+        transform: scale(1.05); /* Slight zoom-in effect on hover */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery figcaption {
+        font-family: 'Georgia', serif;
+        font-size: 1em;
+        color: #555;
+        margin-top: 5px;
     }
 
     /* Footer Styling */
@@ -107,6 +126,4 @@ header h1, header h2, section h2 {
     footer p {
         font-size: 1em;
     }
-
-
 </style>
