@@ -113,6 +113,11 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
     </div>
 
 <script language="javascript">
+
+    let lastLine; // Variable to store the last drawn line
+    let startMarker; // Variable to store the start marker
+    let endMarker; // Variable to store the end marker
+
     function calculateDistance() {
         // Get the user input for coordinates
         const startlat = parseFloat(document.getElementById("startlat").value);
@@ -120,6 +125,16 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
         const endlat = parseFloat(document.getElementById("endlat").value);
         const endlon = parseFloat(document.getElementById("endlon").value);
 
+        // Clear the previous line and markers if they exist
+        if (lastLine) {
+            map.removeLayer(lastLine);
+        }
+        if (startMarker) {
+            map.removeLayer(startMarker);
+        }
+        if (endMarker) {
+            map.removeLayer(endMarker);
+        }
         // Calculate the great circle distance
         const R = 6371; // Earth's radius in km
         const radstLat = startlat * Math.PI / 180;
@@ -136,8 +151,17 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
         // Display the distance
         document.getElementById("distance").innerHTML = "Distance = " + distance.toFixed(2) + " km";
 
+        // Create markers for the start and end locations
+        startMarker = L.marker([startlat, startlon]).addTo(map)
+            .bindPopup("<b>Start Location</b><br>" + "Lat: " + startlat + "<br>Lon: " + startlon);
+        endMarker = L.marker([endlat, endlon]).addTo(map)
+            .bindPopup("<b>End Location</b><br>" + "Lat: " + endlat + "<br>Lon: " + endlon);
+
         // Now calculate and display the great circle path
         drawGreatCircle(startlat, startlon, endlat, endlon);
+
+        // Zoom the map to fit the markers and the line
+        map.fitBounds(lastLine.getBounds());
     }
 
     function drawGreatCircle(startlat, startlon, endlat, endlon) {
