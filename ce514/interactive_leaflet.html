@@ -39,8 +39,43 @@
         </section>
     </div>
 
-    <section>
+    <div class="container">
+        <section>
         <h2>Interactive Leaflet Map</h2>
+<p>Entering a starting and ending latitude and longitude for your desired locations to calculate the distance. </p> <br>
+<p>Starting Latitude: <input type="number" id="startlat" placeholder="Enter a Latitude"></p>
+<p>Starting Longitude: <input type="number" id="startlon" placeholder="Enter a Longitude"></p> <
+
+<p>Ending Latitude: <input type="number" id="endlat" placeholder="Enter a Latitude"></p>
+<p>Ending Longitude: <input type="number" id="endlon" placeholder="Enter a Longitude"></p>
+
+
+    <input type="submit" onclick="calculateDistance()" value="Calculate Distance">
+    
+    <p id="distance"></p>
+        </section>
+    </div>
+
+<script language="javascript">
+    function calculateDistance() {
+        let startlat = parseFloat(document.getElementById("startlat").value);
+        let startlon = document.getElementById("startlon").value;
+        let endlat = document.getElementById("endlat").value;
+        let endlon = document.getElementById("endlon").value;
+        let conversion = 0;
+        let distance = 0;
+
+        // Distance Calculation logic
+
+        }
+
+        // Calculate and display result
+        outputnumber = inputnumber * conversion;
+        document.getElementById("outputvalue").innerHTML = 
+            `${inputnumber} ${inputunits} = ${outputnumber.toFixed(4)} ${outputunits}`;
+    }
+</script>
+    
         <div id="map"></div>
     <!-- Add Leaflet JS for map functionality -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -72,6 +107,15 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
 var marker = L.marker([42.941200695038965, -70.79369900865206]).addTo(map);
 marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise!");    
 
+// Add a 10-minute walking radius circle
+        var walkingRadius = L.circle([43.01535495940256, -70.88023729999998], {
+            radius: 833,  // Radius in meters
+            color: 'green',  // Border color
+            fillColor: 'lightgreen', // Fill color
+            fillOpacity: 0.3 // Transparency
+        }).addTo(map);
+        walkingRadius.bindPopup("<b>10-Minute Walking Radius</b><br>This circle represents the area you can walk to in 10 minutes.");
+
 // Define the coordinates for the polygon (replace these with your property boundary coordinates)
         var homeBoundaryCoordinates = [
             [43.015650, -70.880349], // Point 1
@@ -91,15 +135,6 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
         // Add a popup to the polygon
         homeBoundary.bindPopup("<b>Home Property</b><br>These are the boundaries of my property.");
         
-// Add a 10-minute walking radius circle
-        var walkingRadius = L.circle([43.01535495940256, -70.88023729999998], {
-            radius: 833,  // Radius in meters
-            color: 'green',  // Border color
-            fillColor: 'lightgreen', // Fill color
-            fillOpacity: 0.3 // Transparency
-        }).addTo(map);
-        walkingRadius.bindPopup("<b>10-Minute Walking Radius</b><br>This circle represents the area you can walk to in 10 minutes.");
-
     </script>
     </section>
 </body>
