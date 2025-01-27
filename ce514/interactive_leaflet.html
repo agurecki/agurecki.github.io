@@ -114,81 +114,83 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
 
 <script language="javascript">
 
-    let lastLine; // Variable to store the last drawn line
-    let startMarker; // Variable to store the start marker
-    let endMarker; // Variable to store the end marker
+let lastLine; // Variable to store the last drawn line
+let startMarker; // Variable to store the start marker
+let endMarker; // Variable to store the end marker
 
-    function calculateDistance() {
-        // Get the user input for coordinates
-        const startlat = parseFloat(document.getElementById("startlat").value);
-        const startlon = parseFloat(document.getElementById("startlon").value);
-        const endlat = parseFloat(document.getElementById("endlat").value);
-        const endlon = parseFloat(document.getElementById("endlon").value);
+function calculateDistance() {
+    // Get the user input for coordinates
+    const startlat = parseFloat(document.getElementById("startlat").value);
+    const startlon = parseFloat(document.getElementById("startlon").value);
+    const endlat = parseFloat(document.getElementById("endlat").value);
+    const endlon = parseFloat(document.getElementById("endlon").value);
 
-        // Clear the previous line and markers if they exist
-        if (lastLine) {
-            map.removeLayer(lastLine);
-        }
-        if (startMarker) {
-            map.removeLayer(startMarker);
-        }
-        if (endMarker) {
-            map.removeLayer(endMarker);
-        }
-        // Calculate the great circle distance
-        const R = 6371; // Earth's radius in km
-        const radstLat = startlat * Math.PI / 180;
-        const radstLon = startlon * Math.PI / 180;
-        const radendLat = endlat * Math.PI / 180;
-        const radendLon = endlon * Math.PI / 180;
-        const dLat = radendLat - radstLat;
-        const dLon = radendLon - radstLon;
-
-        const a = Math.sin(dLat / 2) ** 2 + Math.cos(radstLat) * Math.cos(radendLat) * Math.sin(dLon / 2) ** 2;
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const distance = R * c; // Distance in km
-
-        // Display the distance
-        document.getElementById("distance").innerHTML = "Distance = " + distance.toFixed(2) + " km";
-
-        // Create markers for the start and end locations
-        startMarker = L.marker([startlat, startlon]).addTo(map)
-            .bindPopup("<b>Start Location</b><br>" + "Lat: " + startlat + "<br>Lon: " + startlon);
-        endMarker = L.marker([endlat, endlon]).addTo(map)
-            .bindPopup("<b>End Location</b><br>" + "Lat: " + endlat + "<br>Lon: " + endlon);
-
-        // Now calculate and display the great circle path
-        drawGreatCircle(startlat, startlon, endlat, endlon);
-
-        // Zoom the map to fit the markers and the line
-        map.fitBounds(lastLine.getBounds());
+    // Clear the previous line and markers if they exist
+    if (lastLine) {
+        map.removeLayer(lastLine); // Remove the last drawn line
+    }
+    if (startMarker) {
+        map.removeLayer(startMarker); // Remove the start marker
+    }
+    if (endMarker) {
+        map.removeLayer(endMarker); // Remove the end marker
     }
 
-    function drawGreatCircle(startlat, startlon, endlat, endlon) {
-        const num_segments = 100; // The number of points to draw the path
-        const points = [];
-        const R = 6371; // Earth's radius in km
-        const radstLat = startlat * Math.PI / 180;
-        const radstLon = startlon * Math.PI / 180;
-        const radendLat = endlat * Math.PI / 180;
-        const radendLon = endlon * Math.PI / 180;
+    // Calculate the great circle distance
+    const R = 6371; // Earth's radius in km
+    const radstLat = startlat * Math.PI / 180;
+    const radstLon = startlon * Math.PI / 180;
+    const radendLat = endlat * Math.PI / 180;
+    const radendLon = endlon * Math.PI / 180;
+    const dLat = radendLat - radstLat;
+    const dLon = radendLon - radstLon;
 
-        for (let i = 0; i <= num_segments; i++) {
-            const f = i / num_segments;
-            const A = Math.sin((1 - f) * Math.PI / 2) / Math.sin(Math.PI / 2); // Using a simplified formula
-            const B = Math.sin(f * Math.PI / 2) / Math.sin(Math.PI / 2);
-            const x = A * Math.cos(radstLat) * Math.cos(radstLon) + B * Math.cos(radendLat) * Math.cos(radendLon);
-            const y = A * Math.cos(radstLat) * Math.sin(radstLon) + B * Math.cos(radendLat) * Math.sin(radendLon);
-            const z = A * Math.sin(radstLat) + B * Math.sin(radendLat);
-            const newLat = Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
-            const newLng = Math.atan2(y, x);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(radstLat) * Math.cos(radendLat) * Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
 
-            points.push([newLat * 180 / Math.PI, newLng * 180 / Math.PI]); // Store lat and lng in degrees
-        }
+    // Display the distance
+    document.getElementById("distance").innerHTML = "Distance = " + distance.toFixed(2) + " km";
 
-        // Draw the great circle line on the map
-        L.polyline(points, { color: 'red' }).addTo(map);
+    // Create markers for the start and end locations
+    startMarker = L.marker([startlat, startlon]).addTo(map)
+        .bindPopup("<b>Start Location</b><br>" + "Lat: " + startlat + "<br>Lon: " + startlon);
+    endMarker = L.marker([endlat, endlon]).addTo(map)
+        .bindPopup("<b>End Location</b><br>" + "Lat: " + endlat + "<br>Lon: " + endlon);
+
+    // Now calculate and display the great circle path
+    drawGreatCircle(startlat, startlon, endlat, endlon);
+
+    // Zoom the map to fit the markers and the line
+    map.fitBounds(lastLine.getBounds());
+}
+
+function drawGreatCircle(startlat, startlon, endlat, endlon) {
+    const num_segments = 100; // The number of points to draw the path
+    const points = [];
+    const R = 6371; // Earth's radius in km
+    const radstLat = startlat * Math.PI / 180;
+    const radstLon = startlon * Math.PI / 180;
+    const radendLat = endlat * Math.PI / 180;
+    const radendLon = endlon * Math.PI / 180;
+
+    // Calculate the great circle path points
+    for (let i = 0; i <= num_segments; i++) {
+        const f = i / num_segments;
+        const A = Math.sin((1 - f) * Math.PI / 2) / Math.sin(Math.PI / 2); // Using a simplified formula
+        const B = Math.sin(f * Math.PI / 2) / Math.sin(Math.PI / 2);
+        const x = A * Math.cos(radstLat) * Math.cos(radstLon) + B * Math.cos(radendLat) * Math.cos(radendLon);
+        const y = A * Math.cos(radstLat) * Math.sin(radstLon) + B * Math.cos(radendLat) * Math.sin(radendLon);
+        const z = A * Math.sin(radstLat) + B * Math.sin(radendLat);
+        const newLat = Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
+        const newLng = Math.atan2(y, x);
+
+        points.push([newLat * 180 / Math.PI, newLng * 180 / Math.PI]); // Store lat and lng in degrees
     }
+
+    // Draw the new great circle line on the map
+    lastLine = L.polyline(points, { color: 'red' }).addTo(map);
+}
 </script>
 
     
