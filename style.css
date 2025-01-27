@@ -23,7 +23,7 @@
         padding: 20px;
     }
 
-    header h1, header h2, section h2 {
+    header h1, header h2, header h3, section h2 {
         font-family: 'Impact', sans-serif; /* Impact for headers */
         font-size: 2.5em;
         text-align: center; /* Center the headers */
