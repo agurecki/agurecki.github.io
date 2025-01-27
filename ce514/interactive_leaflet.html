@@ -38,45 +38,7 @@
        
         </section>
     </div>
-
-    <div class="container">
-        <section>
-        <h2>Interactive Leaflet Map</h2>
-<p>Entering a starting and ending latitude and longitude for your desired locations to calculate the distance. </p> <br>
-<p>Starting Latitude: <input type="number" id="startlat" placeholder="Enter a Latitude"></p>
-<p>Starting Longitude: <input type="number" id="startlon" placeholder="Enter a Longitude"></p> <
-
-<p>Ending Latitude: <input type="number" id="endlat" placeholder="Enter a Latitude"></p>
-<p>Ending Longitude: <input type="number" id="endlon" placeholder="Enter a Longitude"></p>
-
-
-    <input type="submit" onclick="calculateDistance()" value="Calculate Distance">
-    
-    <p id="distance"></p>
-        </section>
-    </div>
-
-<script language="javascript">
-    function calculateDistance() {
-        let startlat = parseFloat(document.getElementById("startlat").value);
-        let startlon = document.getElementById("startlon").value;
-        let endlat = document.getElementById("endlat").value;
-        let endlon = document.getElementById("endlon").value;
-        let conversion = 0;
-        let distance = 0;
-
-        // Distance Calculation logic
-
-        }
-
-        // Calculate and display result
-        outputnumber = inputnumber * conversion;
-        document.getElementById("outputvalue").innerHTML = 
-            `${inputnumber} ${inputunits} = ${outputnumber.toFixed(4)} ${outputunits}`;
-    }
-</script>
-    
-        <div id="map"></div>
+ <div id="map"></div>
     <!-- Add Leaflet JS for map functionality -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
@@ -101,9 +63,6 @@ marker.bindPopup("<b>Exeter High School</b><br>This is my high school!");
 var marker = L.marker([43.039739167865484, -70.89001864232928]).addTo(map);
 marker.bindPopup("<b>Stratham Fire Tower</b><br>This is my favorite thinking spot!");
         
-var marker = L.marker([42.941200695038965, -70.79369900865206]).addTo(map);
-marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise!");
-
 var marker = L.marker([42.941200695038965, -70.79369900865206]).addTo(map);
 marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise!");    
 
@@ -137,5 +96,61 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
         
     </script>
     </section>
+    <div class="container">
+        <section>
+        <h2>Interactive Leaflet Map</h2>
+<p>Entering a starting and ending latitude and longitude for your desired locations to calculate the distance. </p>
+<p>Starting Latitude: <input type="number" id="startlat" placeholder="Enter a Latitude"></p>
+<p>Starting Longitude: <input type="number" id="startlon" placeholder="Enter a Longitude"></p> 
+<p>Ending Latitude: <input type="number" id="endlat" placeholder="Enter a Latitude"></p>
+<p>Ending Longitude: <input type="number" id="endlon" placeholder="Enter a Longitude"></p>
+
+
+    <input type="submit" onclick="calculateDistance()" value="Calculate Distance">
+    
+    <p id="distance"></p>
+        </section>
+    </div>
+
+<script language="javascript">
+    const startlat = parseFloat(document.getElementById("startlat").value);
+    const startlon = parseFloat(document.getElementById("startlon").value);
+    const endlat = parseFloat(document.getElementById("endlat").value);
+    const endlon = parseFloat(document.getElementById("endlon").value);
+
+                  function calculateDistance(startlat, startlon, endlat, endlon) {
+                    const R = 6371; // Earth's radius in km
+                    const radstLat =  startlat* Math.PI / 180;
+                    const radstLon = startlon * Math.PI / 180;
+                    const radendLat = endlat * Math.PI / 180;
+                    const radendLon = endlon * Math.PI / 180;
+                    const dLat = radendLat - radstLat;
+                    const dLon = radendLon - radstLon;
+                    const a = Math.sin(dLat / 2) ** 2 + Math.cos(radstLat) * Math.cos(radendLat) * Math.sin(dLon / 2) ** 2;
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    const distance = R * c;
+                    document.getElementById("distance").innerHTML = "Distance = " + distance + " km";
+                  }
+                  // Calculate intermediate points
+                  const A = Math.sin((1 - f) * angular_distance) / Math.sin(angular_distance);
+                  const B = Math.sin(f * angular_distance) / Math.sin(angular_distance);
+                  const x = A * Math.cos(radstLat) * Math.cos(radstLon) + B * Math.cos(radendLat) * Math.cos(radendLon);
+                  const y = A * Math.cos(radstLat) * Math.sin(radstLon) + B * Math.cos(radendLat) * Math.sin(radendLon);
+                  const z = A * Math.sin(radstLat) + B * Math.sin(radendLat);
+                  const newLat = Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
+                  const newLng = Math.atan2(y, x);
+    
+                    function great_circle(startlat, startlon, endlat, endlon) {
+                  // ... (calculate angular_distance, num_segments) ...
+                  const points = [];
+                  for (let i = 0; i &lt;= num_segments; i++) {
+                    const f = i / num_segments;
+                    // ... (calculate intermediate latitude and longitude) ...
+                    points.push([new_lat * 180 / Math.PI, new_lng * 180 / Math.PI]);
+                  }
+                  const polyline = L.polyline(points, { color: 'red' }).addTo(map);
+                }
+</script>
+    
 </body>
 </html>
