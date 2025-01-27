@@ -68,8 +68,29 @@ marker.bindPopup("<b>Stratham Fire Tower</b><br>This is my favorite thinking spo
         
 var marker = L.marker([42.941200695038965, -70.79369900865206]).addTo(map);
 marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise!");
-        
-        
+
+var marker = L.marker([42.941200695038965, -70.79369900865206]).addTo(map);
+marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise!");    
+
+// Define the coordinates for the polygon (replace these with your property boundary coordinates)
+        var homeBoundaryCoordinates = [
+            [43.0154, -70.8805], // Point 1
+            [43.0156, -70.8802], // Point 2
+            [43.0152, -70.8800], // Point 3
+            [43.0150, -70.8803], // Point 4
+            [43.0154, -70.8805]  // Closing the loop to Point 1
+        ];
+
+        // Add the polygon to the map
+        var homeBoundary = L.polygon(homeBoundaryCoordinates, {
+            color: 'blue',        // Border color
+            fillColor: 'lightblue', // Fill color
+            fillOpacity: 0.5      // Transparency
+        }).addTo(map);
+
+        // Add a popup to the polygon
+        homeBoundary.bindPopup("<b>Home Property</b><br>These are the boundaries of my property.");
+
     </script>
     </section>
 </body>
