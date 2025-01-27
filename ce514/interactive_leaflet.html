@@ -74,11 +74,11 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
 
 // Define the coordinates for the polygon (replace these with your property boundary coordinates)
         var homeBoundaryCoordinates = [
-            [43.015727, -70.880394], // Point 1
+            [43.015650, -70.880349], // Point 1
             [43.015121, -70.880824], // Point 2
             [43.014797, -70.880045], // Point 3
             [43.015344, -70.879655], // Point 4
-            [43.015727, -70.880394]  // Closing the loop to Point 1
+            [43.015650, -70.880349]  // Closing the loop to Point 1
         ];
 
         // Add the polygon to the map
@@ -90,6 +90,15 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
 
         // Add a popup to the polygon
         homeBoundary.bindPopup("<b>Home Property</b><br>These are the boundaries of my property.");
+        
+// Add a 10-minute walking radius circle
+        var walkingRadius = L.circle([43.01535495940256, -70.88023729999998], {
+            radius: 833,  // Radius in meters
+            color: 'green',  // Border color
+            fillColor: 'lightgreen', // Fill color
+            fillOpacity: 0.3 // Transparency
+        }).addTo(map);
+        walkingRadius.bindPopup("<b>10-Minute Walking Radius</b><br>This circle represents the area you can walk to in 10 minutes.");
 
     </script>
     </section>
