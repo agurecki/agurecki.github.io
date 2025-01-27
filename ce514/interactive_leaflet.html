@@ -125,6 +125,16 @@ function calculateDistance() {
     const endlat = parseFloat(document.getElementById("endlat").value);
     const endlon = parseFloat(document.getElementById("endlon").value);
 
+    // Check if the coordinates are valid
+    if (
+        isNaN(startlat) || isNaN(startlon) || isNaN(endlat) || isNaN(endlon) ||
+        startlat < -90 || startlat > 90 || startlon < -180 || startlon > 180 ||
+        endlat < -90 || endlat > 90 || endlon < -180 || endlon > 180
+    ) {
+        alert("Invalid entry. Please enter valid coordinates.");
+        return; // Stop further execution if input is invalid
+    }
+    
     // Clear the previous line and markers if they exist
     if (lastLine) {
         map.removeLayer(lastLine); // Remove the last drawn line
