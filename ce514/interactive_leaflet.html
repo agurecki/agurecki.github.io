@@ -113,44 +113,60 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
     </div>
 
 <script language="javascript">
-    const startlat = parseFloat(document.getElementById("startlat").value);
-    const startlon = parseFloat(document.getElementById("startlon").value);
-    const endlat = parseFloat(document.getElementById("endlat").value);
-    const endlon = parseFloat(document.getElementById("endlon").value);
+    function calculateDistance() {
+        // Get the user input for coordinates
+        const startlat = parseFloat(document.getElementById("startlat").value);
+        const startlon = parseFloat(document.getElementById("startlon").value);
+        const endlat = parseFloat(document.getElementById("endlat").value);
+        const endlon = parseFloat(document.getElementById("endlon").value);
 
-                  function calculateDistance(startlat, startlon, endlat, endlon) {
-                    const R = 6371; // Earth's radius in km
-                    const radstLat =  startlat* Math.PI / 180;
-                    const radstLon = startlon * Math.PI / 180;
-                    const radendLat = endlat * Math.PI / 180;
-                    const radendLon = endlon * Math.PI / 180;
-                    const dLat = radendLat - radstLat;
-                    const dLon = radendLon - radstLon;
-                    const a = Math.sin(dLat / 2) ** 2 + Math.cos(radstLat) * Math.cos(radendLat) * Math.sin(dLon / 2) ** 2;
-                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                    const distance = R * c;
-                    document.getElementById("distance").innerHTML = "Distance = " + distance + " km";
-                  }
-                  // Calculate intermediate points
-                  const A = Math.sin((1 - f) * angular_distance) / Math.sin(angular_distance);
-                  const B = Math.sin(f * angular_distance) / Math.sin(angular_distance);
-                  const x = A * Math.cos(radstLat) * Math.cos(radstLon) + B * Math.cos(radendLat) * Math.cos(radendLon);
-                  const y = A * Math.cos(radstLat) * Math.sin(radstLon) + B * Math.cos(radendLat) * Math.sin(radendLon);
-                  const z = A * Math.sin(radstLat) + B * Math.sin(radendLat);
-                  const newLat = Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
-                  const newLng = Math.atan2(y, x);
-    
-                    function great_circle(startlat, startlon, endlat, endlon) {
-                  // ... (calculate angular_distance, num_segments) ...
-                  const points = [];
-                  for (let i = 0; i &lt;= num_segments; i++) {
-                    const f = i / num_segments;
-                    // ... (calculate intermediate latitude and longitude) ...
-                    points.push([new_lat * 180 / Math.PI, new_lng * 180 / Math.PI]);
-                  }
-                  const polyline = L.polyline(points, { color: 'red' }).addTo(map);
-                }
+        // Calculate the great circle distance
+        const R = 6371; // Earth's radius in km
+        const radstLat = startlat * Math.PI / 180;
+        const radstLon = startlon * Math.PI / 180;
+        const radendLat = endlat * Math.PI / 180;
+        const radendLon = endlon * Math.PI / 180;
+        const dLat = radendLat - radstLat;
+        const dLon = radendLon - radstLon;
+
+        const a = Math.sin(dLat / 2) ** 2 + Math.cos(radstLat) * Math.cos(radendLat) * Math.sin(dLon / 2) ** 2;
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c; // Distance in km
+
+        // Display the distance
+        document.getElementById("distance").innerHTML = "Distance = " + distance.toFixed(2) + " km";
+
+        // Now calculate and display the great circle path
+        drawGreatCircle(startlat, startlon, endlat, endlon);
+    }
+
+    function drawGreatCircle(startlat, startlon, endlat, endlon) {
+        const num_segments = 100; // The number of points to draw the path
+        const points = [];
+        const R = 6371; // Earth's radius in km
+        const radstLat = startlat * Math.PI / 180;
+        const radstLon = startlon * Math.PI / 180;
+        const radendLat = endlat * Math.PI / 180;
+        const radendLon = endlon * Math.PI / 180;
+
+        for (let i = 0; i <= num_segments; i++) {
+            const f = i / num_segments;
+            const A = Math.sin((1 - f) * Math.PI / 2) / Math.sin(Math.PI / 2); // Using a simplified formula
+            const B = Math.sin(f * Math.PI / 2) / Math.sin(Math.PI / 2);
+            const x = A * Math.cos(radstLat) * Math.cos(radstLon) + B * Math.cos(radendLat) * Math.cos(radendLon);
+            const y = A * Math.cos(radstLat) * Math.sin(radstLon) + B * Math.cos(radendLat) * Math.sin(radendLon);
+            const z = A * Math.sin(radstLat) + B * Math.sin(radendLat);
+            const newLat = Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
+            const newLng = Math.atan2(y, x);
+
+            points.push([newLat * 180 / Math.PI, newLng * 180 / Math.PI]); // Store lat and lng in degrees
+        }
+
+        // Draw the great circle line on the map
+        L.polyline(points, { color: 'red' }).addTo(map);
+    }
 </script>
+
     
 </body>
 </html>
