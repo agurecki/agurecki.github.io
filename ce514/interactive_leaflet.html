@@ -99,7 +99,7 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
     <div class="container">
         <section>
         <h2>Interactive Leaflet Map</h2>
-<p>Entering a starting and ending latitude and longitude for your desired locations to calculate the distance. </p>
+<p>Entering a starting and ending latitude and longitude for your desired locations to calculate the great circle distance. </p>
 <p>Starting Latitude: <input type="number" id="startlat" placeholder="Enter a Latitude"></p>
 <p>Starting Longitude: <input type="number" id="startlon" placeholder="Enter a Longitude"></p> 
 <p>Ending Latitude: <input type="number" id="endlat" placeholder="Enter a Latitude"></p>
@@ -189,7 +189,7 @@ function drawGreatCircle(startlat, startlon, endlat, endlon) {
     }
 
     // Draw the new great circle line on the map
-    lastLine = L.polyline(points, { color: 'red' }).addTo(map);
+    lastLine = L.polyline(points, { color: 'blue' }).addTo(map);
 }
 </script>
 
