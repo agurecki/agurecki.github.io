@@ -175,21 +175,43 @@
         </section>
     </div>
 
-    <!-- Add raw kml files to the code -->
- <div id="map"></div>
-    <!-- Add Leaflet JS for map functionality -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
+   <!-- Add raw KML files to the code -->
+<div id="map"></div>
+<!-- Add Leaflet JS for map functionality -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-omnivore/leaflet-omnivore.min.js"></script>
+
+<script>
+// Initialize the map
 var map = L.map('map').setView([43.0094, -70.9399], 13);
 
-var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Dunkin.kml').addTo(map);
-    
+// Define the Dunkin icon
+var dunkinIcon = L.icon({
+    iconUrl: 'https://logos-world.net/wp-content/uploads/2020/12/Dunkin-Logo.png',
+    iconSize: [40, 40], // Adjust size as necessary
+    iconAnchor: [20, 40], // Adjust anchor to ensure proper alignment
+    popupAnchor: [0, -40] // Adjust popup positioning
+});
+
+// Function to apply the custom Dunkin icon to KML points
+function onEachFeature(feature, layer) {
+    if (feature.geometry && feature.geometry.type === "Point") {
+        layer.setIcon(dunkinIcon);  // Apply the Dunkin icon
+    }
+}
+
+// Add KML files with custom symbology
+var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Dunkin.kml', null, {
+    onEachFeature: onEachFeature // Apply custom icon to each feature
+}).addTo(map);
+
 var kmlLayer2 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Path 1.kml').addTo(map);
-    
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+// Add some other markers and features to the map
 var marker = L.marker([43.0094, -70.9399]).addTo(map);
 marker.bindPopup("<b>Stratham, NH</b><br>This is my hometown!").openPopup();
 
@@ -204,39 +226,39 @@ marker.bindPopup("<b>Exeter High School</b><br>This is my high school!");
 
 var marker = L.marker([43.039739167865484, -70.89001864232928]).addTo(map);
 marker.bindPopup("<b>Stratham Fire Tower</b><br>This is my favorite thinking spot!");
-        
+
 var marker = L.marker([42.941200695038965, -70.79369900865206]).addTo(map);
 marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise!");    
 
 // Add a 10-minute walking radius circle
-        var walkingRadius = L.circle([43.01535495940256, -70.88023729999998], {
-            radius: 833,  // Radius in meters
-            color: 'green',  // Border color
-            fillColor: 'lightgreen', // Fill color
-            fillOpacity: 0.3 // Transparency
-        }).addTo(map);
-        walkingRadius.bindPopup("<b>10-Minute Walking Radius</b><br>This circle represents the area you can walk to in 10 minutes.");
+var walkingRadius = L.circle([43.01535495940256, -70.88023729999998], {
+    radius: 833,  // Radius in meters
+    color: 'green',  // Border color
+    fillColor: 'lightgreen', // Fill color
+    fillOpacity: 0.3 // Transparency
+}).addTo(map);
+walkingRadius.bindPopup("<b>10-Minute Walking Radius</b><br>This circle represents the area you can walk to in 10 minutes.");
 
 // Define the coordinates for the polygon (replace these with your property boundary coordinates)
-        var homeBoundaryCoordinates = [
-            [43.015650, -70.880349], // Point 1
-            [43.015121, -70.880824], // Point 2
-            [43.014797, -70.880045], // Point 3
-            [43.015344, -70.879655], // Point 4
-            [43.015650, -70.880349]  // Closing the loop to Point 1
-        ];
+var homeBoundaryCoordinates = [
+    [43.015650, -70.880349], // Point 1
+    [43.015121, -70.880824], // Point 2
+    [43.014797, -70.880045], // Point 3
+    [43.015344, -70.879655], // Point 4
+    [43.015650, -70.880349]  // Closing the loop to Point 1
+];
 
-        // Add the polygon to the map
-        var homeBoundary = L.polygon(homeBoundaryCoordinates, {
-            color: 'blue',        // Border color
-            fillColor: 'lightblue', // Fill color
-            fillOpacity: 0.5      // Transparency
-        }).addTo(map);
+// Add the polygon to the map
+var homeBoundary = L.polygon(homeBoundaryCoordinates, {
+    color: 'blue',        // Border color
+    fillColor: 'lightblue', // Fill color
+    fillOpacity: 0.5      // Transparency
+}).addTo(map);
 
-        // Add a popup to the polygon
-        homeBoundary.bindPopup("<b>Home Property</b><br>These are the boundaries of my property.");
-        
-    </script>
+// Add a popup to the polygon
+homeBoundary.bindPopup("<b>Home Property</b><br>These are the boundaries of my property.");
+</script>
+
     </section>
    
 
