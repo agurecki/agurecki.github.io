@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
-	<name>Dunkin.kml</name>
-	<StyleMap id="m_ylw-pushpin">
-		<Pair>
-			<key>normal</key>
-			<styleUrl>#s_ylw-pushpin</styleUrl>
-		</Pair>
-		<Pair>
-			<key>highlight</key>
-			<styleUrl>#s_ylw-pushpin_hl</styleUrl>
-		</Pair>
-	</StyleMap>
-	<Style id="s_ylw-pushpin">
-		<IconStyle>
-			<scale>1.1</scale>
-			<Icon>
-				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
-			</Icon>
-			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
-		</IconStyle>
-	</Style>
-	<Style id="s_ylw-pushpin_hl">
-		<IconStyle>
-			<scale>1.3</scale>
-			<Icon>
-				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
-			</Icon>
-			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
-		</IconStyle>
-	</Style>
-	<Placemark>
-		<name>Dunkin</name>
-		<snippet></snippet>
-		<LookAt>
-			<longitude>-71.03594338199281</longitude>
-			<latitude>43.06137529151873</latitude>
-			<altitude>0</altitude>
-			<heading>15.96936756873239</heading>
-			<tilt>0</tilt>
-			<range>38341.54915231901</range>
-			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
-		</LookAt>
-		<styleUrl>#m_ylw-pushpin</styleUrl>
-		<MultiGeometry>
-			<Point>
-				<gx:drawOrder>1</gx:drawOrder>
-				<coordinates>-70.91879166666668,43.00612222222222,0</coordinates>
-			</Point>
-			<Point>
-				<gx:drawOrder>1</gx:drawOrder>
-				<coordinates>-70.9242367790287,43.00009629077114,0</coordinates>
-			</Point>
-			<Point>
-				<gx:drawOrder>1</gx:drawOrder>
-				<coordinates>-70.9380126094069,42.98810557449197,0</coordinates>
-			</Point>
-			<Point>
-				<gx:drawOrder>1</gx:drawOrder>
-				<coordinates>-70.97371817346462,43.00367421814356,0</coordinates>
-			</Point>
-		</MultiGeometry>
-		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10201"></atom:link>
-	</Placemark>
+    <name>Dunkin.kml</name>
+    <StyleMap id="m_ylw-pushpin">
+        <Pair>
+            <key>normal</key>
+            <styleUrl>#s_ylw-pushpin</styleUrl>
+        </Pair>
+        <Pair>
+            <key>highlight</key>
+            <styleUrl>#s_ylw-pushpin_hl</styleUrl>
+        </Pair>
+    </StyleMap>
+    <Style id="s_ylw-pushpin">
+        <IconStyle>
+            <scale>1.1</scale>
+            <Icon>
+                <href>https://logos-world.net/wp-content/uploads/2020/12/Dunkin-Logo.png</href>
+            </Icon>
+            <hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+        </IconStyle>
+    </Style>
+    <Style id="s_ylw-pushpin_hl">
+        <IconStyle>
+            <scale>1.3</scale>
+            <Icon>
+                <href>https://logos-world.net/wp-content/uploads/2020/12/Dunkin-Logo.png</href>
+            </Icon>
+            <hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+        </IconStyle>
+    </Style>
+    <Placemark>
+        <name>Dunkin</name>
+        <snippet></snippet>
+        <LookAt>
+            <longitude>-71.03594338199281</longitude>
+            <latitude>43.06137529151873</latitude>
+            <altitude>0</altitude>
+            <heading>15.96936756873239</heading>
+            <tilt>0</tilt>
+            <range>38341.54915231901</range>
+            <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+        </LookAt>
+        <styleUrl>#m_ylw-pushpin</styleUrl>
+        <MultiGeometry>
+            <Point>
+                <gx:drawOrder>1</gx:drawOrder>
+                <coordinates>-70.91879166666668,43.00612222222222,0</coordinates>
+            </Point>
+            <Point>
+                <gx:drawOrder>1</gx:drawOrder>
+                <coordinates>-70.9242367790287,43.00009629077114,0</coordinates>
+            </Point>
+            <Point>
+                <gx:drawOrder>1</gx:drawOrder>
+                <coordinates>-70.9380126094069,42.98810557449197,0</coordinates>
+            </Point>
+            <Point>
+                <gx:drawOrder>1</gx:drawOrder>
+                <coordinates>-70.97371817346462,43.00367421814356,0</coordinates>
+            </Point>
+        </MultiGeometry>
+        <atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10201"></atom:link>
+    </Placemark>
 </Document>
 </kml>
