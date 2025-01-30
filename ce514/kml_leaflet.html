@@ -199,13 +199,32 @@
  <div id="map"></div>
     <!-- Add Leaflet JS for map functionality -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
+// Initialize the map
+<script>
 var map = L.map('map').setView([43.0094, -70.9399], 13);
 
-var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Dunkin.kml').addTo(map);
-    
+// Define the Dunkin icon
+var dunkinIcon = L.icon({
+    iconUrl: 'https://logos-world.net/wp-content/uploads/2020/12/Dunkin-Logo.png',
+    iconSize: [40, 40], // Adjust size as necessary
+    iconAnchor: [20, 40], // Adjust anchor to ensure proper alignment
+    popupAnchor: [0, -40] // Adjust popup positioning
+});
+
+// Function to apply the custom Dunkin icon to KML points
+function onEachFeature(feature, layer) {
+    if (feature.geometry && feature.geometry.type === "Point") {
+        layer.setIcon(dunkinIcon);  // Apply the Dunkin icon
+    }
+}
+
+// Add KML files with custom symbology
+var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Dunkin.kml', null, {
+    onEachFeature: onEachFeature // Apply custom icon to each feature
+}).addTo(map);
+
 var kmlLayer2 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Path 1.kml').addTo(map);
-    
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
