@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaflet with KML</title>
-        <!-- Link to external Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Link to your external stylesheet -->
-    <link rel="stylesheet" href="../style.css">
-
-  <!-- Leaflet-Omnivore for KML support -->
-    <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
+	<!-- Link to external Leaflet CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+	<!-- Link to your external stylesheet -->
+	<link rel="stylesheet" href="../style.css">
+	<!-- Leaflet-Omnivore for KML support -->
+	<script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
 
 	    <!-- Add CSS to style <code> tags -->
-    <style>
+	<style>
         code {
             display: block;          /* Make <code> block-level so it can have dimensions */
             white-space: pre-wrap;   /* Preserve whitespace but allow wrapping */
@@ -23,11 +22,8 @@
             border: 1px solid #ccc;  /* Optional: add a border for better visibility */
             background-color: #f4f4f4; /* Optional: background color for the code block */
         }
-    </style>
-
-	
+	</style>
 </head>
-    
 <body>
     <header>
         <h1>Amber Allen</h1>
@@ -199,32 +195,13 @@
  <div id="map"></div>
     <!-- Add Leaflet JS for map functionality -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-// Initialize the map
-<script>
+    <script>
 var map = L.map('map').setView([43.0094, -70.9399], 13);
 
-// Define the Dunkin icon
-var dunkinIcon = L.icon({
-    iconUrl: 'https://logos-world.net/wp-content/uploads/2020/12/Dunkin-Logo.png',
-    iconSize: [40, 40], // Adjust size as necessary
-    iconAnchor: [20, 40], // Adjust anchor to ensure proper alignment
-    popupAnchor: [0, -40] // Adjust popup positioning
-});
-
-// Function to apply the custom Dunkin icon to KML points
-function onEachFeature(feature, layer) {
-    if (feature.geometry && feature.geometry.type === "Point") {
-        layer.setIcon(dunkinIcon);  // Apply the Dunkin icon
-    }
-}
-
-// Add KML files with custom symbology
-var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Dunkin.kml', null, {
-    onEachFeature: onEachFeature // Apply custom icon to each feature
-}).addTo(map);
-
+var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Dunkin.kml').addTo(map);
+    
 var kmlLayer2 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Path 1.kml').addTo(map);
-
+    
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
@@ -277,7 +254,6 @@ marker.bindPopup("<b>The Wall</b><br>This is the best place to watch the sunrise
         
     </script>
     </section>
-
     
 </body>
 </html>
