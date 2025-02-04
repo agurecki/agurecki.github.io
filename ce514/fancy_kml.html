@@ -10,6 +10,19 @@
     <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script> 
     <!-- Link to your external stylesheet -->
     <link rel="stylesheet" href="../style.css">
+
+     <!-- Add CSS to style <code> tags -->
+	<style>
+        code {
+            display: block;          /* Make <code> block-level so it can have dimensions */
+            white-space: pre-wrap;   /* Preserve whitespace but allow wrapping */
+            max-height: 200px;       /* Set the maximum height */
+            overflow-y: auto;        /* Enable vertical scrolling if the content exceeds max-height */
+            padding: 5px;            /* Add some padding for better visibility */
+            border: 1px solid #ccc;  /* Optional: add a border for better visibility */
+            background-color: #f4f4f4; /* Optional: background color for the code block */
+        }
+	</style>
 </head>
     
 <body>
@@ -22,6 +35,35 @@
     <div class="container">
         <section>
             <h2>States I've Been To</h2>
+            <p>To make this section, I downloaded a kml files of all 50 states into Google Earth Pro. Then, I created a new 'Place' by dragging/dropping all the states I had been to in the
+            place folder. I saved and uploaded the new kml file to by github, then linked it to my html page in my leaflet script. I also added a feature so that the original pop-ups
+            with state information appear when you click on the map. Here is an example of my code:</p>
+            <code>// Initialize the map
+    var map = L.map('map').setView([39.8283, -98.5795], 4); // Center on the U.S.
+
+    // Add a tile layer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Load KML file (replace with your actual file URL)
+    var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Visited%20States.kml')
+        .on('ready', function() {
+            map.fitBounds(kmlLayer.getBounds()); // Fit map to KML bounds
+
+            // Iterate over each feature in the KML layer
+            kmlLayer.eachLayer(function(layer) {
+                if (layer.feature && layer.feature.properties) {
+                    var name = layer.feature.properties.name || "Unknown State";
+                    var desc = layer.feature.properties.description || "No description available";
+                    
+                    // Bind popup with state name and description
+                    layer.bindPopup("<b>" + name + "</b><br>" + desc);
+                }
+            });
+        })
+        .addTo(map);
+</script></code>
         </section>
     </div>
  <div id="map"></div>
