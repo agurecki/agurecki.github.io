@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Leaflet Page</title>
+        <!-- Link to external Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script> 
+    <!-- Link to your external stylesheet -->
+    <link rel="stylesheet" href="../style.css">
+</head>
+    
+<body>
+    <header>
+        <h1>Amber Allen</h1>
+      <h2>A7 - Updating Interactive KML </h2>
+        <p>CE 514 | Winter 2025 | February 4, 2025</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>States I've Been To</h2>
+        </section>
+    </div>
+ <div id="map"></div>
+    <script>
+    // Initialize the map
+    var map = L.map('map').setView([39.8283, -98.5795], 4); // Center on the U.S.
+
+    // Add a tile layer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Load KML file (replace with your actual file URL)
+    var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Visited%20States.kml')
+        .on('ready', function() {
+            map.fitBounds(kmlLayer.getBounds()); // Adjusts view to fit KML data
+        })
+        .addTo(map);
+</script>
+    </section>
+    
+</body>
+</html>
 
