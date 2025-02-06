@@ -97,7 +97,6 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
-	    Poland.addTo(map);
 
     const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:France_new',
@@ -105,7 +104,7 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
-	    France.addTo(map);
+
 
     const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:Ireland_new',
@@ -113,7 +112,7 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
-	    Ireland.addTo(map);
+
 
     const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:Canada_new',
@@ -121,7 +120,7 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
-	    Canada.addTo(map);
+
 
 	    // Grouping layers for easy toggling
 const momsAncestry = L.layerGroup([France, Ireland, Canada]);
