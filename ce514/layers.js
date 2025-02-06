@@ -5,7 +5,9 @@ const dadsAncestry = L.layerGroup([Poland]);
 // Function to toggle Mom's ancestry layers
 function showMomsAncestry() {
     map.eachLayer(layer => {
-        if (layer !== map.tileLayer) map.removeLayer(layer);
+        if (layer !== baseMap) { // Keep the basemap
+            map.removeLayer(layer);
+        }
     });
     momsAncestry.addTo(map);
 }
@@ -13,7 +15,9 @@ function showMomsAncestry() {
 // Function to toggle Dad's ancestry layers
 function showDadsAncestry() {
     map.eachLayer(layer => {
-        if (layer !== map.tileLayer) map.removeLayer(layer);
+        if (layer !== baseMap) { // Keep the basemap
+            map.removeLayer(layer);
+        }
     });
     dadsAncestry.addTo(map);
 }
