@@ -1,3 +1,4 @@
+updated
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,7 +90,8 @@ function showDadsAncestry() {
 	const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
    	 maxZoom: 19,
    	 attribution: '&copy; OpenStreetMap contributors'
- }).addTo(map);
+ })
+		baseMap.addTo(map);
 
     const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:Poland_new',
@@ -97,6 +99,7 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
+	    Poland.addTo(map);
 
     const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:France_new',
@@ -104,6 +107,7 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
+	    France.addTo(map);
 
 
     const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
@@ -112,6 +116,7 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
+	    Ireland.addTo(map);
 
 
     const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
@@ -120,32 +125,9 @@ function showDadsAncestry() {
         transparent: true,
         attribution: 'Hydroshare GeoServer'
     });
+	    Canada.addTo(map);
 
 
-	    // Grouping layers for easy toggling
-const momsAncestry = L.layerGroup([France, Ireland, Canada]);
-const dadsAncestry = L.layerGroup([Poland]);
-
-momsAncestry.addTo(map);
-
-// Function to toggle Mom's ancestry layers
-function showMomsAncestry() {
-    map.eachLayer(layer => {
-        if (layer !== baseMap) { // Keep the basemap
-            map.removeLayer(layer);
-        }
-    });
-    momsAncestry.addTo(map);
-}
-
-// Function to toggle Dad's ancestry layers
-function showDadsAncestry() {
-    map.eachLayer(layer => {
-        if (layer !== baseMap) { // Keep the basemap
-            map.removeLayer(layer);
-        }
-    });
-    dadsAncestry.addTo(map);
 }
 </script>
 
