@@ -1,4 +1,3 @@
-updated
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,15 +19,25 @@ updated
         }
 
                 #map { width: 100%; height: 600px; }
-        .button-container {
-            margin: 10px;
+      .button-container {
+            margin-top: 10px;
             text-align: center;
         }
-        button {
-            padding: 10px 15px;
-            margin: 5px;
+
+        .toggle-button {
+            padding: 10px 20px;
             font-size: 16px;
+            margin: 5px;
+            border: none;
             cursor: pointer;
+            background-color: lightgray;
+            border-radius: 5px;
+        }
+
+        .toggle-button.selected {
+            background-color: blue;
+            color: white;
+            font-weight: bold;
         }
 	</style>
     
@@ -89,44 +98,48 @@ function showDadsAncestry() {
     var map = L.map('map').setView([54, 10], 4); // Centered on the US
 
     // Base map (OpenStreetMap)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+   const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
     // WMS Layer for Poland
-    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-49ea3bd6231c4e8ea8134ef52e9731ba/wms', {
-        layers: 'HS-49ea3bd6231c4e8ea8134ef52e9731ba:pearl',
+   const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:pl',
         format: 'image/png',
         transparent: true,
         attribution: 'Hydroshare GeoServer'
-    }).addTo(map);
+    });
 
     // WMS Layer for France
-    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-        layers: 'HS-d5080211111c449e986b537d95466eda:France_new',
+   const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:fr',
         format: 'image/png',
         transparent: true,
         attribution: 'Hydroshare GeoServer'
-    }).addTo(map);
+    });
 
     // WMS Layer for Ireland
-    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-        layers: 'HS-d5080211111c449e986b537d95466eda:Ireland_new',
+    const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:ie',
         format: 'image/png',
         transparent: true,
         attribution: 'Hydroshare GeoServer'
-    }).addTo(map);
+    });
 
     // WMS Layer for Canada
-    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-        layers: 'HS-d5080211111c449e986b537d95466eda:Canada_new',
+    const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:ca',
         format: 'image/png',
         transparent: true,
         attribution: 'Hydroshare GeoServer'
-    }).addTo(map);
+    });
 </script>
+	<script src="layers.js"></script> <!-- Link to external script -->
     </div>
-		
+	<div class="button-container">
+    <button id="momButton" class="toggle-button" onclick="selectAncestry('mom')">Mom's Ancestry</button>
+    <button id="dadButton" class="toggle-button" onclick="selectAncestry('dad')">Dad's Ancestry</button>
+</div>	
 </body>
 </html>
