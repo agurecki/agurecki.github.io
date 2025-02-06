@@ -84,43 +84,65 @@ function showDadsAncestry() {
     
     <div id="map" style="width: 100%; height: 600px;"></div>
     <script>
-        var map = L.map('map').setView([20, 110], 2); // Centered on the US
+    var map = L.map('map').setView([20, 110], 2); // Centered on the US
 
-const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-       const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-            layers: 'HS-d5080211111c449e986b537d95466eda:Poland',
-            format: 'image/png',
-            transparent: true,
-            attribution: 'Hydroshare GeoServer'
-        });
-        
-        const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-            layers: 'HS-d5080211111c449e986b537d95466eda:France',
-            format: 'image/png',
-            transparent: true,
-            attribution: 'Hydroshare GeoServer'
-        });
+    const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:Poland',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Hydroshare GeoServer'
+    });
 
-       const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-            layers: 'HS-d5080211111c449e986b537d95466eda:Ireland',
-            format: 'image/png',
-            transparent: true,
-            attribution: 'Hydroshare GeoServer'
+    const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:France',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Hydroshare GeoServer'
+    });
+
+    const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:Ireland',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Hydroshare GeoServer'
+    });
+
+    const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+        layers: 'HS-d5080211111c449e986b537d95466eda:Canada',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Hydroshare GeoServer'
+    });
+
+    // Grouping layers for easy toggling
+    const momsAncestry = L.layerGroup([France, Ireland, Canada]);
+    const dadsAncestry = L.layerGroup([Poland]);
+
+    // Add "Mom's Ancestry" to the map by default
+    momsAncestry.addTo(map);
+
+    // Function to toggle Mom's ancestry layers
+    function showMomsAncestry() {
+        map.eachLayer(layer => {
+            if (layer !== baseMap) map.removeLayer(layer);
         });
-    
-        const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-            layers: 'HS-d5080211111c449e986b537d95466eda:Canada',
-            format: 'image/png',
-            transparent: true,
-            attribution: 'Hydroshare GeoServer'
+        momsAncestry.addTo(map);
+    }
+
+    // Function to toggle Dad's ancestry layers
+    function showDadsAncestry() {
+        map.eachLayer(layer => {
+            if (layer !== baseMap) map.removeLayer(layer);
         });
-    </script>
-    <!-- Load external JavaScript file -->
-    <script src="layers.js"></script>
+        dadsAncestry.addTo(map);
+    }
+</script>
+
     
         <div class="button-container">
         <button onclick="showMomsAncestry()">Mom's Ancestry</button>
