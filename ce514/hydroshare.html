@@ -1,4 +1,4 @@
-updated
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,13 +89,13 @@ function showDadsAncestry() {
     var map = L.map('map').setView([54, 10], 4); // Centered on the US
 
     // Base map (OpenStreetMap)
-    const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
     // WMS Layer for Poland
-    const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:Poland_new',
         format: 'image/png',
         transparent: true,
@@ -103,7 +103,7 @@ function showDadsAncestry() {
     }).addTo(map);
 
     // WMS Layer for France
-    const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:France_new',
         format: 'image/png',
         transparent: true,
@@ -111,7 +111,7 @@ function showDadsAncestry() {
     }).addTo(map);
 
     // WMS Layer for Ireland
-    const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:Ireland_new',
         format: 'image/png',
         transparent: true,
@@ -119,7 +119,7 @@ function showDadsAncestry() {
     }).addTo(map);
 
     // WMS Layer for Canada
-    const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:Canada_new',
         format: 'image/png',
         transparent: true,
