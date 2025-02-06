@@ -2,6 +2,8 @@
 const momsAncestry = L.layerGroup([France, Ireland, Canada]);
 const dadsAncestry = L.layerGroup([Poland]);
 
+momsAncestry.addTo(map);
+
 // Function to toggle Mom's ancestry layers
 function showMomsAncestry() {
     map.eachLayer(layer => {
