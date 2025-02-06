@@ -1,0 +1,6 @@
+## get forcasts from national water model
+# https://danames.com/leaflet/nwm/
+# https://danames.com/leaflet/nwm/a6/
+# search nwm reach ID for the river/stream you're interested in
+# NWPS API
+# get reaches, reachID/streamflow
