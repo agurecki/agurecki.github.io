@@ -1,4 +1,3 @@
-updated
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,8 +89,7 @@ function showDadsAncestry() {
 	const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
    	 maxZoom: 19,
    	 attribution: '&copy; OpenStreetMap contributors'
- })
-		baseMap.addTo(map);
+ }).addTo(map);
 
     const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
         layers: 'HS-d5080211111c449e986b537d95466eda:Poland_new',
