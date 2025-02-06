@@ -4,21 +4,8 @@
     <title>Hydroshare and Leaflet</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-        <!-- Link to your external stylesheet -->
-    <link rel="stylesheet" href="../style.css">
-     <!-- Add CSS to style <code> tags -->
-	<style>
-        code {
-            display: block;          /* Make <code> block-level so it can have dimensions */
-            white-space: pre-wrap;   /* Preserve whitespace but allow wrapping */
-            max-height: 200px;       /* Set the maximum height */
-            overflow-y: auto;        /* Enable vertical scrolling if the content exceeds max-height */
-            padding: 5px;            /* Add some padding for better visibility */
-            border: 1px solid #ccc;  /* Optional: add a border for better visibility */
-            background-color: #f4f4f4; /* Optional: background color for the code block */
-        }
-
-                #map { width: 100%; height: 600px; }
+    <style>
+        #map { width: 100%; height: 600px; }
         .button-container {
             margin: 10px;
             text-align: center;
@@ -29,132 +16,76 @@
             font-size: 16px;
             cursor: pointer;
         }
-	</style>
-    
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Amber Allen</h1>
-      <h2>A7 - Adding Hydroshare Resources to Leaflet Map </h2>
-        <p>CE 514 | Winter 2025 | February 6, 2025</p>
-    </header>
 
-<div class="container">
-        <section>
-            <h2>My Ancestral Origins</h2>
-            <p>To make this section, I downloaded shapefiles of each country that I have ancestry from. I uploaded these files to 
-                Hydroshare and added them to my resource I created for this homework assignment. I added each country as an individual 
-                layer to the Leaflet map.<br>
-	Here is an example one of my wms layers:</p>
-            <code>       
-                const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+    <h1>Amber Allen</h1>
+    <h2>A7 - Adding Hydroshare Resources to Leaflet Map</h2>
+
+    <div id="map"></div>
+    
+    <div class="button-container">
+        <button onclick="showMomsAncestry()">Mom's Ancestry</button>
+        <button onclick="showDadsAncestry()">Dad's Ancestry</button>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([54, 10], 4); // Centered on Europe
+
+        const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Define individual WMS layers
+        const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
             layers: 'HS-d5080211111c449e986b537d95466eda:Poland',
             format: 'image/png',
             transparent: true,
             attribution: 'Hydroshare GeoServer'
         });
-            </code>
-   <p> I also created each layer as a constant, so each could be manipulated in a javascript file that toggles between 
-   my mom's and my dads ancentry. <br>
-   Here is my javascrip code:</p> 
-            <code>
-                // Grouping layers for easy toggling
-const momsAncestry = L.layerGroup([France, Ireland, Canada]);
-const dadsAncestry = L.layerGroup([Poland]);
 
-// Function to toggle Mom's ancestry layers
-function showMomsAncestry() {
-    map.eachLayer(layer => {
-        if (layer !== map.tileLayer) map.removeLayer(layer);
-    });
-    momsAncestry.addTo(map);
-}
+        const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+            layers: 'HS-d5080211111c449e986b537d95466eda:France',
+            format: 'image/png',
+            transparent: true,
+            attribution: 'Hydroshare GeoServer'
+        });
 
-// Function to toggle Dad's ancestry layers
-function showDadsAncestry() {
-    map.eachLayer(layer => {
-        if (layer !== map.tileLayer) map.removeLayer(layer);
-    });
-    dadsAncestry.addTo(map);
-}
+        const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+            layers: 'HS-d5080211111c449e986b537d95466eda:Ireland',
+            format: 'image/png',
+            transparent: true,
+            attribution: 'Hydroshare GeoServer'
+        });
 
-            </code>
-            </section>
-    </div>
-    
-    <div id="map" style="width: 100%; height: 600px;"></div>
-    <script>
-    var map = L.map('map').setView([54, 10], 4); // Centered on the US
+        const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
+            layers: 'HS-d5080211111c449e986b537d95466eda:Canada',
+            format: 'image/png',
+            transparent: true,
+            attribution: 'Hydroshare GeoServer'
+        });
 
-	const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-   	 maxZoom: 19,
-   	 attribution: '&copy; OpenStreetMap contributors'
- }).addTo(map);
+        // Group layers
+        const momsAncestry = L.layerGroup([France, Ireland, Canada]);
+        const dadsAncestry = L.layerGroup([Poland]);
 
-    const Poland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-        layers: 'HS-d5080211111c449e986b537d95466eda:Poland',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'Hydroshare GeoServer'
-    });
-	    Poland.addTo(map);
+        // Add Mom's layers by default
+        momsAncestry.addTo(map);
 
-    const France = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-        layers: 'HS-d5080211111c449e986b537d95466eda:France',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'Hydroshare GeoServer'
-    });
-	    France.addTo(map);
-
-    const Ireland = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-        layers: 'HS-d5080211111c449e986b537d95466eda:Ireland',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'Hydroshare GeoServer'
-    });
-	    Ireland.addTo(map);
-
-    const Canada = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-d5080211111c449e986b537d95466eda/wms', {
-        layers: 'HS-d5080211111c449e986b537d95466eda:Canada',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'Hydroshare GeoServer'
-    });
-	    Canada.addTo(map);
-
-	    // Grouping layers for easy toggling
-const momsAncestry = L.layerGroup([France, Ireland, Canada]);
-const dadsAncestry = L.layerGroup([Poland]);
-
-momsAncestry.addTo(map);
-
-// Function to toggle Mom's ancestry layers
-function showMomsAncestry() {
-    map.eachLayer(layer => {
-        if (layer !== baseMap) { // Keep the basemap
-            map.removeLayer(layer);
+        // Function to toggle Mom's ancestry layers
+        function showMomsAncestry() {
+            map.removeLayer(dadsAncestry); // Remove Dad's layers
+            map.addLayer(momsAncestry);    // Add Mom's layers
         }
-    });
-    momsAncestry.addTo(map);
-}
 
-// Function to toggle Dad's ancestry layers
-function showDadsAncestry() {
-    map.eachLayer(layer => {
-        if (layer !== baseMap) { // Keep the basemap
-            map.removeLayer(layer);
+        // Function to toggle Dad's ancestry layers
+        function showDadsAncestry() {
+            map.removeLayer(momsAncestry); // Remove Mom's layers
+            map.addLayer(dadsAncestry);    // Add Dad's layers
         }
-    });
-    dadsAncestry.addTo(map);
-}
-</script>
+    </script>
 
-    
-        <div class="button-container">
-        <button onclick="showMomsAncestry()">Mom's Ancestry</button>
-        <button onclick="showDadsAncestry()">Dad's Ancestry</button>
-    </div>
-    
 </body>
 </html>
