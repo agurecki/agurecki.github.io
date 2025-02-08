@@ -1,1 +1,69 @@
+<html>
+<head>
+  <title>NWM Forecast Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css">  </head>
+<body>
 
+  <h1>National Water Model (NWM) Forecasts</h1>
+  <h2>Overview</h2>
+<p>The <strong>National Water Model (NWM)</strong> is a hydrologic model developed by the 
+<strong>National Oceanic and Atmospheric Administration (NOAA)</strong> to provide continuous, 
+high-resolution forecasts of streamflow and hydrologic conditions across the United States. 
+It integrates <strong>meteorological, land surface, and hydrologic data</strong> to simulate 
+water movement through the nation's rivers, lakes, and streams.</p>
+
+<ul>
+  <li><strong>Real-time and Forecasted Streamflow Predictions:</strong> Provides hourly, daily, 
+      and seasonal forecasts for over <strong>2.7 million stream reaches</strong> in the U.S.</li>
+  <li><strong>High-Resolution Hydrologic Modeling:</strong> Uses the <strong>National Hydrography Dataset (NHDPlus)</strong> 
+      for detailed river network simulations.</li>
+  <li><strong>Multiple Forecast Scenarios:</strong> Includes short-range (hourly up to 18 hours), 
+      medium-range (10-day), and long-range (30-day) forecasts, as well as retrospective analyses 
+      for trend studies.</li>
+  <li><strong>Flood and Drought Monitoring:</strong> Supports emergency management, water resource 
+      planning, and flood risk mitigation efforts.</li>
+  <li><strong>Data Assimilation:</strong> Incorporates real-time observations from stream gauges, 
+      radar, and satellite data to improve accuracy.</li>
+</ul>
+
+<p>The NWM is a <strong>critical tool for water resource managers, emergency responders, 
+and researchers</strong>, providing valuable insights into hydrologic conditions to enhance 
+decision-making and preparedness.</p>
+
+  <h2>Resources</h2>
+  <p>Learn more about the NWM:</p>
+  <ul>
+    <li><a href="https://water.noaa.gov/about/nwm">NOAA NWM Overview</a></li>
+    <li><a href="https://www.sciencedirect.com/science/article/pii/S1364815224001841">ScienceDirect Paper</a></li>
+    <li><a href="https://onlinelibrary.wiley.com/doi/full/10.1111/1752-1688.13184">Wiley Online Library Paper</a></li>
+  </ul>
+
+  <h2>Enter Reach ID:</h2>
+  <input type="text" id="reachIdInput" placeholder="Enter a Reach ID (e.g., 12121104)">
+  <button onclick="getForecast()">Get Forecast</button>
+
+  <div id="forecast-container">
+    <table id="timeseries-datatable">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Flow value</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <canvas id="streamflowChart"></canvas>
+  </div>
+
+  <div id="how-it-works">
+    <h2>How It Works</h2>
+    <p>This web application retrieves NWM short-range forecasts using the NOAA NWPS API. The user enters a Reach ID, which is a unique identifier for a river segment. The application then makes a request to the NOAA API for the forecast data associated with that Reach ID. The retrieved data (time and streamflow values) is then displayed in a table and visualized in a chart using Chart.js.  If an error occurs during the API call or data processing, an alert message is displayed to inform the user.</p>
+    <p>The API endpoint used is: `https://api.water.noaa.gov/nwps/v1/reaches/{reachId}/streamflow?series=short_range`.  The `{reachId}` portion is replaced with the Reach ID entered by the user.</p>
+    <p>The code first fetches the data from the API.  It then parses the JSON response and extracts the timestamps and flow values.  These values are then used to populate the table and create the chart. The chart is a line graph showing the streamflow over time.</p>
+  </div>
+
+
+  <script src="script.js"></script> </body>
+</html>
