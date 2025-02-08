@@ -132,4 +132,48 @@
     footer p {
         font-size: 1em;
     }
+
+/* General Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f0f8ff; /* Light water-like background */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Headers */
+th {
+    background: #0077b6; /* Deep blue water color */
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+/* Table Rows */
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Hover Effect */
+tr:hover {
+    background: #caf0f8; /* Light aqua highlight */
+    transition: 0.3s;
+}
+
+/* Zebra Striping */
+tr:nth-child(even) {
+    background: #e0f7fa;
+}
+
+/* Responsive Table */
+@media screen and (max-width: 600px) {
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
 </style>
