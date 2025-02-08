@@ -115,7 +115,7 @@ decision-making and preparedness.</p>
     <canvas id="streamflowChart"></canvas>
   </div>
 
-  <div id="how-it-works">
+  <div id="container">
     <h2>How It Works</h2>
     <p>This web application retrieves NWM short-range forecasts using the NOAA NWPS API. The user enters a Reach ID, which is a unique identifier for a river segment. The application then makes a request to the NOAA API for the forecast data associated with that Reach ID. The retrieved data (time and streamflow values) is then displayed in a table and visualized in a chart using Chart.js.  If an error occurs during the API call or data processing, an alert message is displayed to inform the user.</p>
     <p>The API endpoint used is: `https://api.water.noaa.gov/nwps/v1/reaches/{reachId}/streamflow?series=short_range`.  The `{reachId}` portion is replaced with the Reach ID entered by the user.</p>
