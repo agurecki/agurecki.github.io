@@ -93,8 +93,8 @@ decision-making and preparedness.</p>
       <div class="container">
         <section>
   <h2>Enter Reach ID:</h2>
-          <p>Browse the <a href="https://water.noaa.gov/#@=-111.0720429,38.2717373,5.6723669&b=topographic&g=obsFcst,1!1!1!1!1!1!1!1!1!1!1!1!1!1!1!0!0!0!0!0,0.5,1!1!1!1!0,0,0&ab=0,0,#D94B4A,1,1,1,#cccccc,1,0,0,#B243B1,1,0,0,#98E09A,1&a=hydrologic,0.35&s=0,0,0.9,0.9&n=false,#72afe9,0.9,0,0.9,0,0.9&p=false,0.75,0,7,0,1,2025,2,7,0&d=0,0,1,1,1,1,1,1,#006EFF,1,#006EFF,1,#006EFF,1,#006EFF,1,#006EFF&q=">
-            National Water Prediction Service</a> 
+          <p>Browse the <a href="https://water.noaa.gov/#@=-96.401081,38.1465724,3.6863675&b=topographic&g=obsFcst,1!1!1!1!1!1!1!1!1!1!1!1!1!1!1!0!0!0!0!0,0.5,1!1!1!1!0,0,0&ab=0,0,#D94B4A,1,1,1,#cccccc,1,0,0,#B243B1,1,0,0,#98E09A,1&a=hydrologic,0.35&s=0,0,0.9,0.9&n=false,#72afe9,0.9,0,0.9,0,0.9&p=false,0.75,0,7,0,1,2025,2,7,0&d=0,0,1,1,1,1,1,1,#006EFF,1,#006EFF,1,#006EFF,1,#006EFF,1,#006EFF&q="
+                          >National Water Prediction Service</a> 
             website to find the Reach ID of your water system of interest. </p>
   <input type="text" id="reachIdInput" placeholder="Enter a Reach ID (e.g., 12121104)">
   <button onclick="getForecast()">Get Forecast</button>
@@ -122,6 +122,11 @@ decision-making and preparedness.</p>
     <p>The code first fetches the data from the API.  It then parses the JSON response and extracts the timestamps and flow values.  These values are then used to populate the table and create the chart. The chart is a line graph showing the streamflow over time.</p>
   </div>
 
-
+<script>
+  document.querySelectorAll('a').forEach(link => {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+  });
+</script>
   <script src="reachid.js"></script> </body>
 </html>
