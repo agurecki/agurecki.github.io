@@ -170,4 +170,37 @@
     }
 }
 
+/* Centering the input and button */
+#reachIdInput, button {
+    display: block;  /* Makes them take up full width */
+    margin: 20px auto;  /* Centers horizontally */
+    font-size: 1.2rem;  /* Makes text bigger */
+    padding: 12px;  /* Adds space inside */
+    border-radius: 8px;  /* Rounded corners */
+    border: 1px solid #ccc;
+}
+
+/* Styling the input box */
+#reachIdInput {
+    width: 50%;  /* Adjust width */
+    max-width: 400px;  /* Prevents it from getting too big */
+    text-align: center;
+}
+
+/* Styling the button */
+button {
+    width: 50%;  
+    max-width: 300px;
+    background: #005f99;  /* Matching your table header */
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Button hover effect */
+button:hover {
+    background: #003f66;  /* Darker blue on hover */
+}
+
+
 </style>
