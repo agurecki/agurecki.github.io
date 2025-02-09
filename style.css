@@ -208,4 +208,16 @@ button:hover {
     background: white;
     padding: 10px;
 }
+
+#forecast-container {
+    position: relative;
+    overflow: hidden;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Subtle water-like texture */
+    animation: floatBubbles 4s infinite ease-in-out alternate;
+}
+
+@keyframes floatBubbles {
+    from { background-position: 0px 0px; }
+    to { background-position: 10px 10px; } /* Creates a floating effect */
+}
 </style>
