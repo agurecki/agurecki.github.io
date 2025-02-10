@@ -101,10 +101,58 @@ decision-making and preparedness.</p>
   <div id="container">
     <section>
     <h2>How It Works</h2>
-    <p>This web application retrieves NWM short-range forecasts using the NOAA NWPS API. The user enters a Reach ID, which is a unique identifier for a river segment. The application then makes a request to the NOAA API for the forecast data associated with that Reach ID. The retrieved data (time and streamflow values) is then displayed in a table and visualized in a chart using Chart.js.  If an error occurs during the API call or data processing, an alert message is displayed to inform the user.</p>
-    <p>The API endpoint used is: `https://api.water.noaa.gov/nwps/v1/reaches/{reachId}/streamflow?series=short_range`.  The `{reachId}` portion is replaced with the Reach ID entered by the user.</p>
-    <p>The code first fetches the data from the API.  It then parses the JSON response and extracts the timestamps and flow values.  These values are then used to populate the table and create the chart. The chart is a line graph showing the streamflow over time.</p>
-    </section>
+    <p>
+        The streamflow forecast tool retrieves and displays forecasted water flow data based on a user-provided 
+        <strong>Reach ID</strong>. Here's how it works:
+    </p>
+
+    <h3>1. User Input</h3>
+    <p>
+        The user enters a Reach ID into the input field and clicks the "Get Forecast" button. If no ID is entered, 
+        an alert prompts the user to provide one.
+    </p>
+
+    <h3>2. Fetching Forecast Data</h3>
+    <p>
+        The tool sends a request to the <a href="https://api.water.noaa.gov/nwps/v1" target="_blank">NOAA NWPS API</a> 
+        using the entered Reach ID. If the API responds successfully, the streamflow forecast data is retrieved.
+        If no data is available, an error message is displayed.
+    </p>
+
+    <h3>3. Displaying the Data</h3>
+    <p>
+        The forecast section appears, and the retrieved data is processed into two key components:
+    </p>
+    <ul>
+        <li><strong>A Table:</strong> Displays time-stamped streamflow values.</li>
+        <li><strong>A Chart:</strong> A visually appealing line graph showing streamflow trends over time.</li>
+    </ul>
+
+    <h3>4. Chart Features</h3>
+    <p>
+        The chart uses <a href="https://www.chartjs.org/" target="_blank">Chart.js</a> and includes:
+    </p>
+    <ul>
+        <li>Smooth curved lines for better readability.</li>
+        <li>A blue gradient background representing water flow.</li>
+        <li>Interactive hover effects for precise data points.</li>
+        <li>Custom-styled axis labels and tooltips.</li>
+    </ul>
+
+    <h3>5. Error Handling</h3>
+    <p>
+        If something goes wrong (e.g., an invalid Reach ID or network issues), the tool:
+    </p>
+    <ul>
+        <li>Displays an error message.</li>
+        <li>Clears any previously displayed data to prevent confusion.</li>
+    </ul>
+
+    <h3>Final Result</h3>
+    <p>
+        This tool automates the process of retrieving, formatting, and presenting streamflow forecast data, 
+        making it easy to analyze water flow trends in real time! 🚀
+    </p>
   </div>
 
 <script>
