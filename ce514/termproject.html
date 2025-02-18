@@ -127,6 +127,50 @@
             });
         })
         .addTo(map);
+// Add markers for each river with popups
+    var rivers = [
+        {
+            name: "Merrimack River",
+            coords: [42.7153, -71.5148]
+        },
+        {
+            name: "Squannacook River",
+            coords: [42.5940, -71.6505]
+        },
+        {
+            name: "Concord River",
+            coords: [42.4456, -71.3522]
+        },
+        {
+            name: "Shawsheen River",
+            coords: [42.6460, -71.2579]
+        },
+        {
+            name: "Charles River",
+            coords: [42.3736, -71.1097]
+        },
+        {
+            name: "Neponset River",
+            coords: [42.2578, -71.1215]
+        },
+        {
+            name: "Sudbury River",
+            coords: [42.3477, -71.4211]
+        }
+    ];
+
+    rivers.forEach(function(river) {
+        var marker = L.marker(river.coords).addTo(map);
+
+        // Popup with forecast buttons
+        marker.bindPopup(
+            '<strong>' + river.name + '</strong><br>' +
+            '<button onclick="showForecast(\'short-range\', \'' + river.name + '\')">Short-range Forecast</button><br>' +
+            '<button onclick="showForecast(\'mid-range\', \'' + river.name + '\')">Mid-range Forecast</button><br>' +
+            '<button onclick="showForecast(\'long-range\', \'' + river.name + '\')">Long-range Forecast</button>'
+        );
+    });
+
 </script>
       <div class="container">
         <section>
