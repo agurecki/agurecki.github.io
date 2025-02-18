@@ -85,6 +85,11 @@
         </section>
       </div>
 <div id="map"></div>
+
+<div id="forecast-container">
+    <canvas id="streamflowChart"></canvas>
+</div>
+
     <script>
     // Initialize the map
     var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on the MASS
@@ -127,50 +132,110 @@
             });
         })
         .addTo(map);
-// Add markers for each river with popups
-    var rivers = [
-        {
-            name: "Merrimack River",
-            coords: [42.7153, -71.5148]
-        },
-        {
-            name: "Squannacook River",
-            coords: [42.5940, -71.6505]
-        },
-        {
-            name: "Concord River",
-            coords: [42.4456, -71.3522]
-        },
-        {
-            name: "Shawsheen River",
-            coords: [42.6460, -71.2579]
-        },
-        {
-            name: "Charles River",
-            coords: [42.3736, -71.1097]
-        },
-        {
-            name: "Neponset River",
-            coords: [42.2578, -71.1215]
-        },
-        {
-            name: "Sudbury River",
-            coords: [42.3477, -71.4211]
-        }
+var rivers = [
+        { name: "Merrimack River at Lowell", coords: [42.7153, -71.5148], reachID: "6746184" },
+        { name: "Squannacook River at West Groton", coords: [42.5940, -71.6505], reachID: "6076039" },
+        { name: "Concord River at Lowell", coords: [42.4456, -71.3522], reachID: "6771379" },
+        { name: "Merrimack River at Goffs Falls", coords: [42.8251, -71.5151], reachID: "6745688" },
+        { name: "Merrimack River at Nashua", coords: [42.7651, -71.4682], reachID: "6746036" },
+        { name: "Shawsheen River at Andover", coords: [42.6460, -71.2579], reachID: "6744972" },
+        { name: "Charles River at Dover", coords: [42.3477, -71.4211], reachID: "5867435" },
+        { name: "Neponset River at Norwood", coords: [42.2578, -71.1215], reachID: "5867537" },
+        { name: "Sudbury River at Saxonville", coords: [42.2570, -71.4723], reachID: "6772927" }
     ];
 
     rivers.forEach(function(river) {
         var marker = L.marker(river.coords).addTo(map);
 
-        // Popup with forecast buttons
         marker.bindPopup(
-            '<strong>' + river.name + '</strong><br>' +
-            '<button onclick="showForecast(\'short-range\', \'' + river.name + '\')">Short-range Forecast</button><br>' +
-            '<button onclick="showForecast(\'mid-range\', \'' + river.name + '\')">Mid-range Forecast</button><br>' +
-            '<button onclick="showForecast(\'long-range\', \'' + river.name + '\')">Long-range Forecast</button>'
+            `<strong>${river.name}</strong><br>` +
+            `<button onclick="getForecast('short_range', '${river.reachID}', '${river.name}')">Short-range Forecast</button><br>` +
+            `<button onclick="getForecast('medium_range', '${river.reachID}', '${river.name}')">Medium-range Forecast</button><br>` +
+            `<button onclick="getForecast('long_range', '${river.reachID}', '${river.name}')">Long-range Forecast</button>`
         );
     });
 
+    // Function to get the forecast
+    async function getForecast(forecastType, reachID, riverName) {
+        const forecastContainer = document.getElementById('forecast-container');
+        forecastContainer.style.display = 'block';
+
+        const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachID}/streamflow?series=${forecastType}`;
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
+            }
+
+            const json_data = await response.json();
+            if (!json_data[forecastType] || !json_data[forecastType].series || !json_data[forecastType].series.data || json_data[forecastType].series.data.length === 0) {
+                throw new Error(`No forecast data available for ${forecastType} on ${riverName}.`);
+            }
+
+            const streamflowData = json_data[forecastType].series.data;
+            const timestamps = streamflowData.map(item => item.validTime);
+            const flowValues = streamflowData.map(item => item.flow);
+
+            // Create the chart
+            const ctx = document.getElementById('streamflowChart').getContext('2d');
+            let chart = Chart.getChart('streamflowChart'); // Check if chart exists
+
+            if (chart) {
+                chart.destroy(); // Destroy existing chart if present
+            }
+
+            chart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: timestamps,
+                    datasets: [{
+                        label: `Streamflow Forecast (${forecastType.replace('_', ' ').toUpperCase()})`,
+                        data: flowValues,
+                        borderColor: "#0077b6",
+                        borderWidth: 3,
+                        fill: true,
+                        backgroundColor: createGradient(ctx),
+                        tension: 0.4,
+                        pointBackgroundColor: "#ffcc00",
+                        pointBorderColor: "#005f99",
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: "#ff5733",
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: "#333" } },
+                        tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: "#005f99", font: { size: 14 } },
+                            grid: { color: "rgba(0, 0, 0, 0.1)" },
+                            title: { display: true, text: "Time", color: "#222" }
+                        },
+                        y: {
+                            ticks: { color: "#005f99", font: { size: 14 } },
+                            grid: { color: "rgba(0, 0, 0, 0.1)" },
+                            title: { display: true, text: "Streamflow (cfs)", color: "#222" }
+                        }
+                    },
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        }
+    }
+
+    function createGradient(ctx) {
+        var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, "rgba(0, 119, 182, 0.6)");
+        gradient.addColorStop(1, "rgba(0, 119, 182, 0.2)");
+        return gradient;
+    }
 </script>
       <div class="container">
         <section>
