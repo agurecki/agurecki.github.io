@@ -80,7 +80,34 @@
   </ul>
         </section>
       </div>
+<div id="map"></div>
+    <script>
+    // Initialize the map
+    var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on the MASS
 
+    // Add a tile layer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Load KML file (replace with your actual file URL)
+    var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Visited%20States.kml')
+        .on('ready', function() {
+            map.fitBounds(kmlLayer.getBounds()); // Fit map to KML bounds
+
+            // Iterate over each feature in the KML layer
+            kmlLayer.eachLayer(function(layer) {
+                if (layer.feature && layer.feature.properties) {
+                    var name = layer.feature.properties.name || "Unknown State";
+                    var desc = layer.feature.properties.description || "No description available";
+                    
+                    // Bind popup with state name and description
+                    layer.bindPopup("<b>" + name + "</b><br>" + desc);
+                }
+            });
+        })
+        .addTo(map);
+</script>
       <div class="container">
         <section>
   <h2>Enter Reach ID:</h2>
