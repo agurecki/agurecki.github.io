@@ -28,12 +28,12 @@
     </style>
 </head>
 <body>
-    <h1>Short-range Forecast for Merrimack River at Lowell</h1>
+    <h1>Forecast for Merrimack River at Lowell</h1>
     <!-- The map container -->
     <div id="map"></div>
 
     <!-- Container for forecast chart -->
-    <div id="forecast-container">
+    <div id="forecast-container" style="display: none;">
         <canvas id="forecast-chart"></canvas>
     </div>
 
@@ -51,18 +51,20 @@
         var marker = L.marker([42.7153, -71.5148]).addTo(map);
         marker.bindPopup(`
             <strong>Merrimack River at Lowell</strong><br>
-            <button onclick="getShortRangeForecast()">Get Short-range Forecast</button>
+            <button onclick="getForecast('short_range')">Get Short-range Forecast</button><br>
+            <button onclick="getForecast('medium_range')">Get Medium-range Forecast</button><br>
+            <button onclick="getForecast('long_range')">Get Long-range Forecast</button>
         `);
 
-        // Function to get short-range forecast for Merrimack River at Lowell
-        async function getShortRangeForecast() {
+        // Function to get forecast for Merrimack River at Lowell (short_range, medium_range, long_range)
+        async function getForecast(range) {
             const reachId = '6746184'; // Merrimack River at Lowell Reach ID
             const forecastContainer = document.getElementById('forecast-container');
             forecastContainer.style.display = 'block';
 
             try {
-                // Fetch the short-range forecast data from the NOAA API
-                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=short_range`;
+                // API URL depending on the range type (short_range, medium_range, long_range)
+                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${range}`;
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
@@ -71,12 +73,12 @@
                 const json_data = await response.json();
 
                 // Check if data is available
-                if (!json_data.shortRange || !json_data.shortRange.series || !json_data.shortRange.series.data || json_data.shortRange.series.data.length === 0) {
-                    throw new Error("No short-range forecast data available.");
+                if (!json_data[range] || !json_data[range].series || !json_data[range].series.data || json_data[range].series.data.length === 0) {
+                    throw new Error(`No ${range} forecast data available.`);
                 }
 
                 // Extract streamflow data (timestamps and flow values)
-                const streamflowData = json_data.shortRange.series.data;
+                const streamflowData = json_data[range].series.data;
                 const timestamps = streamflowData.map(item => item.validTime);
                 const flowValues = streamflowData.map(item => item.flow);
 
@@ -84,7 +86,7 @@
                 const chartData = {
                     labels: timestamps, // X-axis labels (timestamps)
                     datasets: [{
-                        label: 'Flow (cfs)',
+                        label: `Flow (cfs) - ${range.replace('_', ' ').toUpperCase()}`,
                         data: flowValues, // Y-axis values (flow)
                         borderColor: 'rgb(75, 192, 192)',
                         fill: false
