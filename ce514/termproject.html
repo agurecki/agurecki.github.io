@@ -1,3 +1,4 @@
+updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -8,27 +9,20 @@
     <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script> 
   <link rel="stylesheet" href="../style.css">  
 
-  <style>
-    #forecast-container {
-  display: none;
-  margin-top: 20px;
-  border: 1px solid #dee2e6; /* Light gray border */
-  padding: 20px;
-  border-radius: 8px;
-  background-color: white; /* White background for the forecast area */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-#streamflowChart {
-    margin-top: 20px;
-    width: 100%; /* Make the chart take full width */
-    max-width: 800px; /* Limit the maximum width */
-    height: 400px; /* Set a fixed height */
-    max-height: 600px; /* Limit the maximum height */
-    margin-left: auto; /* Center the chart horizontally */
-    margin-right: auto; /* Center the chart horizontally */
-}
-  </style>
+<style>
+        #map {
+            height: 600px;
+        }
+        #forecast-container {
+            display: none;
+            width: 100%;
+            height: 400px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
 </head>
 
   
@@ -132,7 +126,8 @@
             });
         })
         .addTo(map);
-var rivers = [
+// River data with corresponding reach IDs
+    var rivers = [
         { name: "Merrimack River at Lowell", coords: [42.7153, -71.5148], reachID: "6746184" },
         { name: "Squannacook River at West Groton", coords: [42.5940, -71.6505], reachID: "6076039" },
         { name: "Concord River at Lowell", coords: [42.4456, -71.3522], reachID: "6771379" },
@@ -144,6 +139,7 @@ var rivers = [
         { name: "Sudbury River at Saxonville", coords: [42.2570, -71.4723], reachID: "6772927" }
     ];
 
+    // Add markers to the map for each river and bind the forecast buttons
     rivers.forEach(function(river) {
         var marker = L.marker(river.coords).addTo(map);
 
