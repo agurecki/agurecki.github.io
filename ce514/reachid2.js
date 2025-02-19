@@ -31,6 +31,14 @@ async function getForecast(forecastType, reachID, riverName) {
         const flowValues = streamflowData.map(item => item.flow);
 
         // Create or update the chart
+
+        function createGradient(ctx) {
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(0, 119, 182, 0.8)");
+    gradient.addColorStop(1, "rgba(0, 119, 182, 0.2)");
+    return gradient;
+}
+        
         const ctx = document.getElementById('streamflowChart').getContext('2d');
         let chart = Chart.getChart('streamflowChart'); // Check if chart exists
 
