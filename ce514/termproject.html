@@ -93,63 +93,92 @@ updated3
     }).addTo(map);
 
     // Load KML file (replace with your actual file URL)
-    var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/watersheds2.kml')
-        .on('ready', function() {
-            map.fitBounds(kmlLayer1.getBounds()); // Fix variable name
 
-            // Iterate over each feature in the KML layer
-            kmlLayer1.eachLayer(function(layer) { // Fix variable name
-                if (layer.feature && layer.feature.properties) {
-                    var name = layer.feature.properties.name || "Unknown State";
-                    var desc = layer.feature.properties.description || "No description available";
+var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Major_Rivers_and_Streams.kml')
+    .addTo(map);
 
-                    // Bind popup with state name and description
-                    layer.bindPopup("<b>" + name + "</b><br>" + desc);
+        // The getForecast function
+        async function getForecast(rangeType, reachId, riverName) {
+            if (!reachId) {
+                alert("Please enter a Reach ID.");
+                return;
+            }
+
+            const forecastContainer = document.getElementById('forecast-container');
+            forecastContainer.style.display = 'block';
+
+            try {
+                // Fetch the forecast data for the given reachId and rangeType
+                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${rangeType}`;
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
                 }
-            });
-        })
-        .addTo(map);
 
-    var kmlLayer2 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Major_Rivers_and_Streams.kml')
-        .on('ready', function() {
-            map.fitBounds(kmlLayer2.getBounds()); // Fix variable name
+                const json_data = await response.json();
 
-            // Iterate over each feature in the KML layer
-            kmlLayer2.eachLayer(function(layer) { // Fix variable name
-                if (layer.feature && layer.feature.properties) {
-                    var name = layer.feature.properties.name || "Unknown State";
-                    var desc = layer.feature.properties.description || "No description available";
-
-                    // Bind popup with state name and description
-                    layer.bindPopup("<b>" + name + "</b><br>" + desc);
+                // Check if data is available
+                if (!json_data[rangeType] || !json_data[rangeType].series || !json_data[rangeType].series.data || json_data[rangeType].series.data.length === 0) {
+                    throw new Error(`No forecast data available for ${rangeType} on ${riverName}.`);
                 }
-            });
-        })
-        .addTo(map);
 
-    // Add river markers with popups
-    var rivers = [
-        { name: "Merrimack River at Lowell", coords: [42.7153, -71.5148], reachID: "6746184" },
-        { name: "Squannacook River at West Groton", coords: [42.5940, -71.6505], reachID: "6076039" },
-        { name: "Concord River at Lowell", coords: [42.4456, -71.3522], reachID: "6771379" },
-        { name: "Merrimack River at Goffs Falls", coords: [42.8251, -71.5151], reachID: "6745688" },
-        { name: "Merrimack River at Nashua", coords: [42.7651, -71.4682], reachID: "6746036" },
-        { name: "Shawsheen River at Andover", coords: [42.6460, -71.2579], reachID: "6744972" },
-        { name: "Charles River at Dover", coords: [42.3477, -71.4211], reachID: "5867435" },
-        { name: "Neponset River at Norwood", coords: [42.2578, -71.1215], reachID: "5867537" },
-        { name: "Sudbury River at Saxonville", coords: [42.2570, -71.4723], reachID: "6772927" }
-    ];
+                // Extract streamflow data (timestamps and flow values)
+                const streamflowData = json_data[rangeType].series.data;
+                const timestamps = streamflowData.map(item => item.validTime);
+                const flowValues = streamflowData.map(item => item.flow);
 
-    rivers.forEach(function(river) {
-        var marker = L.marker(river.coords).addTo(map);
-        marker.bindPopup(
-            `<strong>${river.name}</strong><br>` +
-            `<button onclick="getForecast('short_range', '${river.reachID}', '${river.name}')">Short-range Forecast</button><br>` +
-            `<button onclick="getForecast('medium_range', '${river.reachID}', '${river.name}')">Medium-range Forecast</button><br>` +
-            `<button onclick="getForecast('long_range', '${river.reachID}', '${river.name}')">Long-range Forecast</button>`
-        );
-    });
-</script>
+                // Format the data for display (you can customize this to match your UI design)
+                const formattedData = streamflowData.map(item => {
+                    return `<tr>
+                                <td>${item.validTime}</td>
+                                <td>${item.flow}</td>
+                            </tr>`;
+                }).join('');
+
+                // Display the data in the forecast container
+                const forecastHtml = `
+                    <h3>Forecast for ${riverName} (${rangeType.replace("_", " ").toUpperCase()})</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Flow (cfs)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${formattedData}
+                        </tbody>
+                    </table>
+                `;
+                forecastContainer.innerHTML = forecastHtml;
+
+            } catch (error) {
+                console.error(error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        // Add river markers with popups and associated forecast buttons
+        var rivers = [
+            { name: "Merrimack River at Lowell", coords: [42.7153, -71.5148], reachID: "6746184" },
+            { name: "Squannacook River at West Groton", coords: [42.5940, -71.6505], reachID: "6076039" },
+            { name: "Shawsheen River at Andover", coords: [42.6460, -71.2579], reachID: "6744972" },
+            { name: "Charles River at Dover", coords: [42.3477, -71.4211], reachID: "5867435" },
+            { name: "Neponset River at Norwood", coords: [42.2578, -71.1215], reachID: "5867537" },
+            { name: "Sudbury River at Saxonville", coords: [42.2570, -71.4723], reachID: "6772927" }
+        ];
+
+        // Add markers and popups to the map
+        rivers.forEach(function(river) {
+            var marker = L.marker(river.coords).addTo(map);
+            marker.bindPopup(
+                `<strong>${river.name}</strong><br>` +
+                `<button onclick="getForecast('short_range', '${river.reachID}', '${river.name}')">Short-range Forecast</button><br>` +
+                `<button onclick="getForecast('medium_range', '${river.reachID}', '${river.name}')">Medium-range Forecast</button><br>` +
+                `<button onclick="getForecast('long_range', '${river.reachID}', '${river.name}')">Long-range Forecast</button>`
+            );
+        });
+    </script>
 
 
   <div id="container">
