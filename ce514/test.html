@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River Forecast - Merrimack River at Lowell</title>
+    
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Add a container for the map -->
+    <style>
+        #map {
+            height: 400px;
+        }
+
+        #forecast-container {
+            margin-top: 20px;
+        }
+
+        #forecast-chart {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Short-range Forecast for Merrimack River at Lowell</h1>
+    <!-- The map container -->
+    <div id="map"></div>
+
+    <!-- Container for forecast chart -->
+    <div id="forecast-container">
+        <canvas id="forecast-chart"></canvas>
+    </div>
+
+    <!-- Include Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <script>
+        // Initialize the map and set the view
+        const map = L.map('map').setView([42.7153, -71.5148], 13); // Merrimack River at Lowell coordinates
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Add a marker for Merrimack River at Lowell
+        var marker = L.marker([42.7153, -71.5148]).addTo(map);
+        marker.bindPopup(`
+            <strong>Merrimack River at Lowell</strong><br>
+            <button onclick="getShortRangeForecast()">Get Short-range Forecast</button>
+        `);
+
+        // Function to get short-range forecast for Merrimack River at Lowell
+        async function getShortRangeForecast() {
+            const reachId = '6746184'; // Merrimack River at Lowell Reach ID
+            const forecastContainer = document.getElementById('forecast-container');
+            forecastContainer.style.display = 'block';
+
+            try {
+                // Fetch the short-range forecast data from the NOAA API
+                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=short_range`;
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
+                }
+
+                const json_data = await response.json();
+
+                // Check if data is available
+                if (!json_data.shortRange || !json_data.shortRange.series || !json_data.shortRange.series.data || json_data.shortRange.series.data.length === 0) {
+                    throw new Error("No short-range forecast data available.");
+                }
+
+                // Extract streamflow data (timestamps and flow values)
+                const streamflowData = json_data.shortRange.series.data;
+                const timestamps = streamflowData.map(item => item.validTime);
+                const flowValues = streamflowData.map(item => item.flow);
+
+                // Prepare the data for the chart
+                const chartData = {
+                    labels: timestamps, // X-axis labels (timestamps)
+                    datasets: [{
+                        label: 'Flow (cfs)',
+                        data: flowValues, // Y-axis values (flow)
+                        borderColor: 'rgb(75, 192, 192)',
+                        fill: false
+                    }]
+                };
+
+                // Create and render the chart
+                const ctx = document.getElementById('forecast-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                type: 'category',
+                                title: {
+                                    display: true,
+                                    text: 'Time'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Flow (cfs)'
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error(error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
