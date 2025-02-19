@@ -1,3 +1,4 @@
+updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -93,7 +94,7 @@
     }).addTo(map);
 
     // Load KML file (replace with your actual file URL)
-    var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/watersheds2.kml')
+    var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/watersheds2.kml')
         .on('ready', function() {
             map.fitBounds(kmlLayer.getBounds()); // Fit map to KML bounds
 
@@ -109,7 +110,7 @@
             });
         })
         .addTo(map);
-          var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Major_Rivers_and_Streams.kml')
+          var kmlLayer2 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Major_Rivers_and_Streams.kml')
         .on('ready', function() {
             map.fitBounds(kmlLayer.getBounds()); // Fit map to KML bounds
 
@@ -138,18 +139,25 @@
         { name: "Sudbury River at Saxonville", coords: [42.2570, -71.4723], reachID: "6772927" }
     ];
 
-    // Add markers to the map for each river and bind the forecast buttons
-    rivers.forEach(function(river) {
-        var marker = L.marker(river.coords).addTo(map);
+// Merrimack River at Lowell
+var marker1 = L.marker([42.6406, -71.3161]).addTo(map)
+  .bindPopup(`
+    <h3>Merrimack River at Lowell</h3>
+    <button onclick="getForecast('short_range', '6746184', 'Merrimack River at Lowell')">Short-Range Forecast</button>
+    <button onclick="getForecast('medium_range', '6746184', 'Merrimack River at Lowell')">Medium-Range Forecast</button>
+    <button onclick="getForecast('long_range', '6746184', 'Merrimack River at Lowell')">Long-Range Forecast</button>
+  `);
 
-        marker.bindPopup(
-            `<strong>${river.name}</strong><br>` +
-            `<button onclick="getForecast('short_range', '${river.reachID}', '${river.name}')">Short-range Forecast</button><br>` +
-            `<button onclick="getForecast('medium_range', '${river.reachID}', '${river.name}')">Medium-range Forecast</button><br>` +
-            `<button onclick="getForecast('long_range', '${river.reachID}', '${river.name}')">Long-range Forecast</button>`
-        );
-    });
+// Squannacook River at West Groton
+var marker2 = L.marker([42.5790, -71.5950]).addTo(map)
+  .bindPopup(`
+    <h3>Squannacook River at West Groton</h3>
+    <button onclick="getForecast('short_range', '6076039', 'Squannacook River at West Groton')">Short-Range Forecast</button>
+    <button onclick="getForecast('medium_range', '6076039', 'Squannacook River at West Groton')">Medium-Range Forecast</button>
+    <button onclick="getForecast('long_range', '6076039', 'Squannacook River at West Groton')">Long-Range Forecast</button>
+  `);
 
+ 
 async function getForecast(rangeType, reachId, riverName) {
     const forecastContainer = document.getElementById('forecast-container');
     forecastContainer.innerHTML = `<p>Loading ${rangeType} forecast for ${riverName}...</p>`;
