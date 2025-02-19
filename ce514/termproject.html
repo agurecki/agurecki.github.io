@@ -150,30 +150,45 @@
         );
     });
 
-   async function getForecast(forecastType, reachID, riverName) {
+async function getForecast(rangeType, reachId, riverName) {
     const forecastContainer = document.getElementById('forecast-container');
+    forecastContainer.innerHTML = `<p>Loading ${rangeType} forecast for ${riverName}...</p>`;
     forecastContainer.style.display = 'block';
 
-    const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachID}/streamflow?series=${forecastType}`;
     try {
+        const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${rangeType}`;
+        console.log(`Fetching data from: ${apiUrl}`);
+
         const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
         }
 
-        const json_data = await response.json();
+        const jsonData = await response.json();
+        console.log(jsonData);
 
-        // Log the full response to the console for debugging
-        console.log("API Response:", json_data);
-
-        // Check if the forecast data exists for the specific forecastType
-        if (!json_data[forecastType] || !json_data[forecastType].series || !json_data[forecastType].series.data || json_data[forecastType].series.data.length === 0) {
-            throw new Error(`No forecast data available for ${forecastType} on ${riverName}.`);
+        if (!jsonData[rangeType] || !jsonData[rangeType].series || !jsonData[rangeType].series.data || jsonData[rangeType].series.data.length === 0) {
+            throw new Error(`No forecast data available for ${rangeType} on ${riverName}.`);
         }
 
-        const streamflowData = json_data[forecastType].series.data;
-        const timestamps = streamflowData.map(item => item.validTime);
-        const flowValues = streamflowData.map(item => item.flow);
+        const streamflowData = jsonData[rangeType].series.data;
+        let forecastHtml = `<h3>${riverName} - ${rangeType.replace('_', ' ')} Forecast</h3>`;
+        forecastHtml += `<ul>`;
+
+        streamflowData.forEach(entry => {
+            const date = new Date(entry[0]).toLocaleString();
+            const flow = entry[1];
+            forecastHtml += `<li>${date}: ${flow} cfs</li>`;
+        });
+
+        forecastHtml += `</ul>`;
+        forecastContainer.innerHTML = forecastHtml;
+    } catch (error) {
+        console.error(error);
+        forecastContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
+    }
+}
+
 
         // Create the chart
         const ctx = document.getElementById('streamflowChart').getContext('2d');
