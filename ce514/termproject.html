@@ -126,6 +126,31 @@ updated1
             });
         })
         .addTo(map);
+
+    // Add river markers with popups
+    var rivers = [
+        { name: "Merrimack River at Lowell", coords: [42.7153, -71.5148], reachID: "6746184" },
+        { name: "Squannacook River at West Groton", coords: [42.5940, -71.6505], reachID: "6076039" },
+        { name: "Concord River at Lowell", coords: [42.4456, -71.3522], reachID: "6771379" },
+        { name: "Merrimack River at Goffs Falls", coords: [42.8251, -71.5151], reachID: "6745688" },
+        { name: "Merrimack River at Nashua", coords: [42.7651, -71.4682], reachID: "6746036" },
+        { name: "Shawsheen River at Andover", coords: [42.6460, -71.2579], reachID: "6744972" },
+        { name: "Charles River at Dover", coords: [42.3477, -71.4211], reachID: "5867435" },
+        { name: "Neponset River at Norwood", coords: [42.2578, -71.1215], reachID: "5867537" },
+        { name: "Sudbury River at Saxonville", coords: [42.2570, -71.4723], reachID: "6772927" }
+    ];
+
+    rivers.forEach(function(river) {
+        var marker = L.marker(river.coords).addTo(map);
+        marker.bindPopup(
+            `<strong>${river.name}</strong><br>` +
+            `<button onclick="getForecast('short_range', '${river.reachID}', '${river.name}')">Short-range Forecast</button><br>` +
+            `<button onclick="getForecast('medium_range', '${river.reachID}', '${river.name}')">Medium-range Forecast</button><br>` +
+            `<button onclick="getForecast('long_range', '${river.reachID}', '${river.name}')">Long-range Forecast</button>`
+        );
+    });
+};
+      
 </script>
 
   <div id="container">
