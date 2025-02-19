@@ -1,4 +1,4 @@
-updated1
+updated2
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -83,10 +83,9 @@ updated1
 <div id="forecast-container">
     <canvas id="streamflowChart"></canvas>
 </div>
-
-    <script>
+<script>
     // Initialize the map
-    var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on the MASS
+    var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on Massachusetts
 
     // Add a tile layer (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -96,30 +95,31 @@ updated1
     // Load KML file (replace with your actual file URL)
     var kmlLayer1 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/watersheds2.kml')
         .on('ready', function() {
-            map.fitBounds(kmlLayer.getBounds()); // Fit map to KML bounds
+            map.fitBounds(kmlLayer1.getBounds()); // Fix variable name
 
             // Iterate over each feature in the KML layer
-            kmlLayer.eachLayer(function(layer) {
+            kmlLayer1.eachLayer(function(layer) { // Fix variable name
                 if (layer.feature && layer.feature.properties) {
                     var name = layer.feature.properties.name || "Unknown State";
                     var desc = layer.feature.properties.description || "No description available";
-                    
+
                     // Bind popup with state name and description
                     layer.bindPopup("<b>" + name + "</b><br>" + desc);
                 }
             });
         })
         .addTo(map);
-          var kmlLayer2 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Major_Rivers_and_Streams.kml')
+
+    var kmlLayer2 = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Major_Rivers_and_Streams.kml')
         .on('ready', function() {
-            map.fitBounds(kmlLayer.getBounds()); // Fit map to KML bounds
+            map.fitBounds(kmlLayer2.getBounds()); // Fix variable name
 
             // Iterate over each feature in the KML layer
-            kmlLayer.eachLayer(function(layer) {
+            kmlLayer2.eachLayer(function(layer) { // Fix variable name
                 if (layer.feature && layer.feature.properties) {
                     var name = layer.feature.properties.name || "Unknown State";
                     var desc = layer.feature.properties.description || "No description available";
-                    
+
                     // Bind popup with state name and description
                     layer.bindPopup("<b>" + name + "</b><br>" + desc);
                 }
@@ -149,9 +149,8 @@ updated1
             `<button onclick="getForecast('long_range', '${river.reachID}', '${river.name}')">Long-range Forecast</button>`
         );
     });
-};
-      
 </script>
+
 
   <div id="container">
     <section>
