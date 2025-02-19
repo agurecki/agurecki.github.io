@@ -144,17 +144,9 @@
 
         marker.bindPopup(
             `<strong>${river.name}</strong><br>` +
-<!-- Merrimack River at Lowell -->
-<button onclick="getForecast('short_range', 6746184, 'Merrimack River at Lowell')">Short-Range Forecast - Merrimack River at Lowell</button>
-<button onclick="getForecast('medium_range', 6746184, 'Merrimack River at Lowell')">Medium-Range Forecast - Merrimack River at Lowell</button>
-<button onclick="getForecast('long_range', 6746184, 'Merrimack River at Lowell')">Long-Range Forecast - Merrimack River at Lowell</button>
-
-<!-- Concord River at Lowell -->
-<button onclick="getForecast('short_range', 6771379, 'Concord River at Lowell')">Short-Range Forecast - Concord River at Lowell</button>
-<button onclick="getForecast('medium_range', 6771379, 'Concord River at Lowell')">Medium-Range Forecast - Concord River at Lowell</button>
-<button onclick="getForecast('long_range', 6771379, 'Concord River at Lowell')">Long-Range Forecast - Concord River at Lowell</button>
-
-      
+            `<button onclick="getForecast('short_range', '${river.reachID}', '${river.name}')">Short-range Forecast</button><br>` +
+            `<button onclick="getForecast('medium_range', '${river.reachID}', '${river.name}')">Medium-range Forecast</button><br>` +
+            `<button onclick="getForecast('long_range', '${river.reachID}', '${river.name}')">Long-range Forecast</button>`
         );
     });
 
