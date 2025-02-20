@@ -110,16 +110,17 @@ var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki
             try {
                 // Fetch the forecast data for the given reachId and rangeType
                 const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${rangeType}`;
+                console.log(`Fetching data from: ${apiUrl}`); // Debug print
                 const response = await fetch(apiUrl);
-                if (!response.ok) {
+            if (!response.ok) {
                     throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
                 }
 
                 const json_data = await response.json();
 
                 // Check if data is available
-                if (!json_data[rangeType] || !json_data[rangeType].series || !json_data[rangeType].series.data || json_data[rangeType].series.data.length === 0) {
-                    throw new Error(`No forecast data available for ${rangeType} on ${riverName}.`);
+               if (!json_data.shortRange || !json_data.shortRange.series || !json_data.shortRange.series.data || json_data.shortRange.series.data.length === 0) {
+                  throw new Error("No forecast data available for this Reach ID.");
                 }
 
                 // Extract streamflow data (timestamps and flow values)
