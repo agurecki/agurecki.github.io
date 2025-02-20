@@ -1,4 +1,4 @@
-updated
+updated1
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -23,33 +23,37 @@ updated
             height: 100% !important;
         }
 
-  .button-container {
+/* Style for the container holding the buttons */
+.button-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Centers buttons */
-    gap: 10px; /* Space between buttons */
-    max-width: 400px; /* Controls width */
-    margin: 20px auto; /* Centers the container */
+    justify-content: space-between; /* Ensures buttons are spaced out evenly */
+    width: 100%; /* Takes the full width of the container */
+    max-width: 600px; /* Optional: Adjust max width to fit the screen */
 }
 
+/* Style for individual buttons */
 .river-button {
-    flex: 1 1 30%; /* Each button takes about 30% width */
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    flex: 1 1 0; /* Ensures the buttons evenly share the container space */
+    padding: 10px;
+    text-align: center;
+    background-color: #f1f1f1; /* Light background */
+    border: 1px solid #ddd; /* Border for buttons */
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background-color 0.3s; /* Smooth transition for active state */
 }
 
 .river-button:hover {
     background-color: #0056b3;
 }
 
+/* Active button state (green) */
 .river-button.active {
-    background-color: #28a745; /* Green when selected */
+    background-color: #4caf50; /* Green background when active */
+    color: white; /* White text when active */
+}
+  /* Prevent the buttons from wrapping */
+.button-container {
+    white-space: nowrap;
 }
 
     </style>
@@ -141,22 +145,23 @@ updated
 
     var activeLayer = null; // Track the currently active layer
 
-    function toggleRiver(riverName, button) {
-        // Toggle the river layer on the map
-        if (activeLayer) {
-            map.removeLayer(activeLayer); // Remove the currently active layer
-            button.classList.remove('active'); // Remove the active class from the button
-        }
-
-        if (activeLayer !== rivers[riverName]) {
-            activeLayer = rivers[riverName]; // Set new active layer
-            activeLayer.addTo(map); // Add selected river to the map
-            button.classList.add('active'); // Add active class to the button
-        } else {
-            activeLayer = null; // If the same river is clicked again, remove it
-            button.classList.remove('active'); // Remove the active class from the button
-        }
+function toggleRiver(riverName, button) {
+    // Remove 'active' class from all buttons
+    document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
+    
+    // Toggle the river layer on the map
+    if (activeLayer) {
+        map.removeLayer(activeLayer); // Remove the currently active layer
     }
+
+    if (activeLayer !== rivers[riverName]) {
+        activeLayer = rivers[riverName]; // Set new active layer
+        activeLayer.addTo(map); // Add selected river to the map
+        button.classList.add('active'); // Add active class to the clicked button
+    } else {
+        activeLayer = null; // If the same river is clicked again, remove it
+    }
+}
 </script>
 
 
