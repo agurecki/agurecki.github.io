@@ -22,6 +22,36 @@ updated1
             width: 100% !important;
             height: 100% !important;
         }
+
+  .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers buttons */
+    gap: 10px; /* Space between buttons */
+    max-width: 400px; /* Controls width */
+    margin: 20px auto; /* Centers the container */
+}
+
+.river-button {
+    flex: 1 1 30%; /* Each button takes about 30% width */
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.river-button:hover {
+    background-color: #0056b3;
+}
+
+.river-button.active {
+    background-color: #28a745; /* Green when selected */
+}
+
     </style>
 </head>
 
@@ -78,13 +108,13 @@ updated1
   </ul>
         </section>
       </div>
-<div id="button-container">
-    <button onclick="showRiver('Charles')">Charles River</button>
-    <button onclick="showRiver('Concord')">Concord River</button>
-    <button onclick="showRiver('Merrimack')">Merrimack River</button>
-    <button onclick="showRiver('Shawsheen')">Shawsheen River</button>
-    <button onclick="showRiver('Squannacook')">Squannacook River</button>
-    <button onclick="showRiver('Neponset')">Neponset River</button>
+<div class="button-container">
+    <button class="river-button" onclick="toggleRiver('Charles', this)">Charles</button>
+    <button class="river-button" onclick="toggleRiver('Concord', this)">Concord</button>
+    <button class="river-button" onclick="toggleRiver('Merrimack', this)">Merrimack</button>
+    <button class="river-button" onclick="toggleRiver('Shawsheen', this)">Shawsheen</button>
+    <button class="river-button" onclick="toggleRiver('Squannacook', this)">Squannacook</button>
+    <button class="river-button" onclick="toggleRiver('Neponset', this)">Neponset</button>
 </div>
 
 <div id="map"></div>
@@ -108,15 +138,43 @@ updated1
         Neponset: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Neponset%20at%20Norwell.kml')
     };
 
-    var activeLayer = null; // Track the currently active layer
+let currentLayer = null;
 
-    function showRiver(riverName) {
-        if (activeLayer) {
-            map.removeLayer(activeLayer); // Remove the currently active layer
-        }
-        activeLayer = rivers[riverName]; // Set new active layer
-        activeLayer.addTo(map); // Add selected river to the map
+function toggleRiver(riverName, button) {
+    // Remove existing river layer if one is visible
+    if (currentLayer) {
+        map.removeLayer(currentLayer);
     }
+
+    // Reset active class for all buttons
+    document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
+
+    // Add active class to the clicked button
+    button.classList.add('active');
+
+    // Add the selected river layer
+    switch (riverName) {
+        case 'Charles': 
+            currentLayer = Charles.addTo(map); 
+            break;
+        case 'Concord': 
+            currentLayer = Concord.addTo(map); 
+            break;
+        case 'Merrimack': 
+            currentLayer = Merrimack.addTo(map); 
+            break;
+        case 'Shawsheen': 
+            currentLayer = Shawsheen.addTo(map); 
+            break;
+        case 'Squannacook': 
+            currentLayer = Squannacook.addTo(map); 
+            break;
+        case 'Neponset': 
+            currentLayer = Neponset.addTo(map); 
+            break;
+    }
+}
+
 </script>
 
   <div id="container">
