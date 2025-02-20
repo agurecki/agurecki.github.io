@@ -1,4 +1,4 @@
-updated1
+updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -141,14 +141,24 @@ updated1
 
     var activeLayer = null; // Track the currently active layer
 
-    function showRiver(riverName) {
+    function toggleRiver(riverName, button) {
+        // Toggle the river layer on the map
         if (activeLayer) {
             map.removeLayer(activeLayer); // Remove the currently active layer
+            button.classList.remove('active'); // Remove the active class from the button
         }
-        activeLayer = rivers[riverName]; // Set new active layer
-        activeLayer.addTo(map); // Add selected river to the map
+
+        if (activeLayer !== rivers[riverName]) {
+            activeLayer = rivers[riverName]; // Set new active layer
+            activeLayer.addTo(map); // Add selected river to the map
+            button.classList.add('active'); // Add active class to the button
+        } else {
+            activeLayer = null; // If the same river is clicked again, remove it
+            button.classList.remove('active'); // Remove the active class from the button
+        }
     }
 </script>
+
 
   <div id="container">
     <section>
