@@ -119,9 +119,8 @@ var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki
                 const json_data = await response.json();
 
                 // Check if data is available
-               if (!json_data.shortRange || !json_data.shortRange.series || !json_data.shortRange.series.data || json_data.shortRange.series.data.length === 0) {
-                  throw new Error("No forecast data available for this Reach ID.");
-                }
+                if (!json_data[rangeType] || !json_data[rangeType].series || !json_data[rangeType].series.data || json_data[rangeType].series.data.length === 0) {
+                    throw new Error(`No forecast data available for ${rangeType} on ${riverName}.`);
 
                 // Extract streamflow data (timestamps and flow values)
                 const streamflowData = json_data[rangeType].series.data;
