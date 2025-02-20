@@ -1,4 +1,4 @@
-updated1
+updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -138,8 +138,6 @@ updated1
         Neponset: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Neponset%20at%20Norwell.kml')
     };
 
-let currentLayer = null;
-
 function toggleRiver(riverName, button) {
     // Remove existing river layer if one is visible
     if (currentLayer) {
@@ -153,27 +151,11 @@ function toggleRiver(riverName, button) {
     button.classList.add('active');
 
     // Add the selected river layer
-    switch (riverName) {
-        case 'Charles': 
-            currentLayer = Charles.addTo(map); 
-            break;
-        case 'Concord': 
-            currentLayer = Concord.addTo(map); 
-            break;
-        case 'Merrimack': 
-            currentLayer = Merrimack.addTo(map); 
-            break;
-        case 'Shawsheen': 
-            currentLayer = Shawsheen.addTo(map); 
-            break;
-        case 'Squannacook': 
-            currentLayer = Squannacook.addTo(map); 
-            break;
-        case 'Neponset': 
-            currentLayer = Neponset.addTo(map); 
-            break;
+    if (rivers[riverName]) {
+        currentLayer = rivers[riverName].addTo(map);
     }
 }
+
 
 </script>
 
