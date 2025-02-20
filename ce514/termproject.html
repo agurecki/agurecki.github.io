@@ -93,19 +93,19 @@ updated2
     }).addTo(map);
 
     // Load KML file (replace with your actual file URL)
-
-var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Charles%20at%20Dover.kml')
+  var Charles = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Charles%20at%20Dover.kml')
     .addTo(map);
-  
-        // Add river markers with popups and associated forecast buttons
-        var rivers = [
-            { name: "Merrimack River at Lowell", coords: [42.7153, -71.5148], reachID: "6746184" },
-            { name: "Squannacook River at West Groton", coords: [42.5940, -71.6505], reachID: "6076039" },
-            { name: "Shawsheen River at Andover", coords: [42.6460, -71.2579], reachID: "6744972" },
-            { name: "Charles River at Dover", coords: [42.3477, -71.4211], reachID: "5867435" },
-            { name: "Neponset River at Norwood", coords: [42.2578, -71.1215], reachID: "5867537" },
-            { name: "Sudbury River at Saxonville", coords: [42.2570, -71.4723], reachID: "6772927" }
-        ];
+  var Concord = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Concord%20at%20Lowell.kml')
+    .addTo(map);
+  var Merrimack = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Merrimack%20at%20Lowell.kml')
+    .addTo(map);
+  var Shawsheen = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Shawsheen%20Andover.kml')
+    .addTo(map);
+  var Squannacook = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Squannacook%20River.kml')
+    .addTo(map);
+  var Neponset = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Neponset%20at%20Norwell.kml')
+    .addTo(map);
+
 
 // Add markers and popups to the map
                   rivers.forEach(function(river) {
