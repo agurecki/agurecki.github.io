@@ -1,4 +1,4 @@
-updated1
+updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -26,19 +26,21 @@ updated1
 /* Style for the container holding the buttons */
 .button-container {
     display: flex;
-    justify-content: space-around; /* Ensures buttons are spaced evenly with some padding */
-    width: 100%; /* Takes the full width of the container */
+    justify-content: space-between; /* Evenly distribute buttons with space between */
+    width: 100%; /* Full width of the container */
     max-width: 600px; /* Optional: Adjust max width to fit the screen */
+    gap: 10px; /* Space between the buttons */
+    padding: 10px 0; /* Optional: Adds some padding around the buttons */
 }
 
 /* Style for individual buttons */
 .river-button {
-    flex: 1 1 0; /* Ensures the buttons evenly share the container space */
+    flex: 1 1 0; /* Buttons take equal width */
     padding: 10px;
     text-align: center;
     background-color: #007bff; /* Blue background by default */
     border: 1px solid #007bff; /* Border matching the background */
-    color: white; /* White text by default */
+    color: white; /* White text */
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
 }
@@ -59,8 +61,7 @@ updated1
 .button-container {
     white-space: nowrap;
 }
-
-
+  
     </style>
 </head>
 
@@ -117,7 +118,9 @@ updated1
   </ul>
         </section>
       </div>
-  
+
+        <div class="container">
+        <section>
 <div class="button-container">
     <button class="river-button" onclick="toggleRiver('Charles', this)">Charles</button>
     <button class="river-button" onclick="toggleRiver('Concord', this)">Concord</button>
@@ -126,7 +129,8 @@ updated1
     <button class="river-button" onclick="toggleRiver('Squannacook', this)">Squannacook</button>
     <button class="river-button" onclick="toggleRiver('Neponset', this)">Neponset</button>
 </div>
-
+        </section>
+      </div>
 <div id="map"></div>
 
 <script>
