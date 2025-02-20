@@ -78,11 +78,17 @@ updated1
   </ul>
         </section>
       </div>
+<div id="button-container">
+    <button onclick="showRiver('Charles')">Charles River</button>
+    <button onclick="showRiver('Concord')">Concord River</button>
+    <button onclick="showRiver('Merrimack')">Merrimack River</button>
+    <button onclick="showRiver('Shawsheen')">Shawsheen River</button>
+    <button onclick="showRiver('Squannacook')">Squannacook River</button>
+    <button onclick="showRiver('Neponset')">Neponset River</button>
+</div>
+
 <div id="map"></div>
 
-<div id="forecast-container">
-    <canvas id="streamflowChart"></canvas>
-</div>
 <script>
     // Initialize the map
     var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on Massachusetts
@@ -92,21 +98,26 @@ updated1
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Load KML file (replace with your actual file URL)
-  var Charles = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Charles%20at%20Dover.kml')
-    .addTo(map);
-  var Concord = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Concord%20at%20Lowell.kml')
-    .addTo(map);
-  var Merrimack = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Merrimack%20at%20Lowell.kml')
-    .addTo(map);
-  var Shawsheen = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Shawsheen%20Andover.kml')
-    .addTo(map);
-  var Squannacook = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Squannacook%20River.kml')
-    .addTo(map);
-  var Neponset = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Neponset%20at%20Norwell.kml')
-    .addTo(map);
+    // Load KML files
+    var rivers = {
+        Charles: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Charles%20at%20Dover.kml'),
+        Concord: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Concord%20at%20Lowell.kml'),
+        Merrimack: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Merrimack%20at%20Lowell.kml'),
+        Shawsheen: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Shawsheen%20Andover.kml'),
+        Squannacook: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Squannacook%20River.kml'),
+        Neponset: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Neponset%20at%20Norwell.kml')
+    };
 
-    </script>
+    var activeLayer = null; // Track the currently active layer
+
+    function showRiver(riverName) {
+        if (activeLayer) {
+            map.removeLayer(activeLayer); // Remove the currently active layer
+        }
+        activeLayer = rivers[riverName]; // Set new active layer
+        activeLayer.addTo(map); // Add selected river to the map
+    }
+</script>
 
   <div id="container">
     <section>
