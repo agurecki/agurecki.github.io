@@ -1,4 +1,4 @@
-updated3
+updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -96,68 +96,7 @@ updated3
 
 var kmlLayer = omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Major_Rivers_and_Streams.kml')
     .addTo(map);
-
-        // The getForecast function
-        async function getForecast(rangeType, reachId, riverName) {
-            if (!reachId) {
-                alert("Please enter a Reach ID.");
-                return;
-            }
-
-            const forecastContainer = document.getElementById('forecast-container');
-            forecastContainer.style.display = 'block';
-
-            try {
-                // Fetch the forecast data for the given reachId and rangeType
-                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${rangeType}`;
-                console.log(`Fetching data from: ${apiUrl}`); // Debug print
-                const response = await fetch(apiUrl);
-            if (!response.ok) {
-                    throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
-                }
-
-                const json_data = await response.json();
-
-                // Check if data is available
-                if (!json_data[rangeType] || !json_data[rangeType].series || !json_data[rangeType].series.data || json_data[rangeType].series.data.length === 0) {
-                    throw new Error(`No forecast data available for ${rangeType} on ${riverName}.`);
-
-                // Extract streamflow data (timestamps and flow values)
-                const streamflowData = json_data[rangeType].series.data;
-                const timestamps = streamflowData.map(item => item.validTime);
-                const flowValues = streamflowData.map(item => item.flow);
-
-                // Format the data for display (you can customize this to match your UI design)
-                const formattedData = streamflowData.map(item => {
-                    return `<tr>
-                                <td>${item.validTime}</td>
-                                <td>${item.flow}</td>
-                            </tr>`;
-                }).join('');
-
-                // Display the data in the forecast container
-                const forecastHtml = `
-                    <h3>Forecast for ${riverName} (${rangeType.replace("_", " ").toUpperCase()})</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Timestamp</th>
-                                <th>Flow (cfs)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${formattedData}
-                        </tbody>
-                    </table>
-                `;
-                forecastContainer.innerHTML = forecastHtml;
-
-            } catch (error) {
-                console.error(error);
-                alert(`Error: ${error.message}`);
-            }
-        }
-
+  
         // Add river markers with popups and associated forecast buttons
         var rivers = [
             { name: "Merrimack River at Lowell", coords: [42.7153, -71.5148], reachID: "6746184" },
