@@ -86,34 +86,21 @@ updated
     color: white;
 }
 
-header {
-    position: relative; /* Positioning context for the overlay */
+body {
     background-image: url('https://publicinterestnetwork.org/wp-content/uploads/2024/10/great-blue-heron-in-flight-tim-wilson-via-unsplash-2000x1125.jpg');
-    background-size: cover; 
+    background-size: cover;
     background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: Arial, sans-serif;
     color: white;
-    padding: 20px;
-    height: 400px;
 }
 
-/* Overlay for transparency */
-header::before {
-    content: ''; /* Required for the pseudo-element */
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3); /* Adjust the transparency here (0 to 1) */
-    z-index: 1; /* Ensures the overlay sits above the background image */
+header {
+    background: rgba(0, 0, 0, 0.5); /* Optional: adds transparency behind header content */
+    padding: 40px 20px;
+    text-align: center;
 }
-
-header h1 {
-    position: relative; /* Ensure the text stays above the overlay */
-    z-index: 2; /* Place text above the overlay */
-}
-  
-    </style>
   
 </head>
 
