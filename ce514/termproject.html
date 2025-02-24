@@ -1,3 +1,4 @@
+updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -257,22 +258,13 @@ function toggleRiver(riverName, button) {
         }
     }
 
-   async function getForecast() {
+  async function getForecast() {
     if (!selectedRiver || !selectedRange) {
         alert("Please select both a river and a forecast range.");
         return;
     }
 
     var reachId = reachIds[selectedRiver];
-
-    // Map selectedRange to the JSON response format
-    var rangeKeyMap = {
-        "short_range": "shortRange",
-        "medium_range": "mediumRange",
-        "long_range": "longRange"
-    };
-
-    var jsonRangeKey = rangeKeyMap[selectedRange] || selectedRange; // Default to selectedRange if not mapped
     var apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
 
     try {
@@ -282,14 +274,24 @@ function toggleRiver(riverName, button) {
         }
 
         const json_data = await response.json();
-        console.log('API Response:', json_data);
+        console.log('Full API Response:', json_data);
 
-        // Use mapped jsonRangeKey to access the correct series
-        if (!json_data[jsonRangeKey] || !json_data[jsonRangeKey].series || json_data[jsonRangeKey].series.data.length === 0) {
+        let streamflowData;
+        
+        if (selectedRange === "short_range" && json_data.shortRange) {
+            streamflowData = json_data.shortRange.series?.data || [];
+        } else if (selectedRange === "medium_range" && json_data.mediumRange) {
+            streamflowData = json_data.mediumRange.series?.data || [];
+        } else if (selectedRange === "long_range" && json_data.longRange) {
+            streamflowData = json_data.longRange.series?.data || [];
+        } else {
+            throw new Error("No forecast data available for this range.");
+        }
+
+        if (streamflowData.length === 0) {
             throw new Error("No forecast data available.");
         }
 
-        const streamflowData = json_data[jsonRangeKey].series.data;
         const timestamps = streamflowData.map(item => item.validTime);
         const flowValues = streamflowData.map(item => item.flow);
 
