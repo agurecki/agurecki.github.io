@@ -35,6 +35,20 @@
     align-items: center; /* Center buttons vertically if desired */
 }
 
+    .button-link {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .button-link:hover {
+    background-color: #0056b3;
+  }
+
 /* Style for individual buttons */
 .river-button {
     flex: 1 1 0; /* Buttons take equal width */
@@ -143,18 +157,7 @@ header {
           </section>
     </div>
 
-      <div class="container">
-        <section>
-  <h2>Resources</h2>
-  <p>Learn more about the NWM:</p>
-  <ul>
-    <li><a href="https://water.noaa.gov/about/nwm">NOAA NWM Homepage</a></li>
-    <li><a href="howitworks.html">How This Web App Works</a></li>
-  </ul>
-        </section>
-      </div>
-
-        <div class="container">
+     <div class="container">
         <section>
           <h2>Rivers</h2>
           <p>Select a river section below to view on the map</p>
@@ -337,6 +340,16 @@ header {
         return gradient;
     }
 </script>
+
+<div class="container">
+  <section>
+    <h2>Resources</h2>
+    <div class="button-container">
+      <a href="https://water.noaa.gov/about/nwm" class="button-link">NOAA NWM Homepage</a>
+      <a href="howitworks.html" class="button-link">How This Web App Works</a>
+    </div>
+  </section>
+</div>
   
   <div id="container">
     <section>
