@@ -1,0 +1,298 @@
+<html>
+<head>
+  <title>Great Blue Heron Sighting Predictor</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <!-- Link to external Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script> 
+  <link rel="stylesheet" href="../style.css">  
+
+<style>
+        #map {
+            height: 600px;
+        }
+        #forecast-container {
+            display: none;
+            width: 100%;
+            height: 400px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Evenly distribute buttons with space between */
+    width: 100%; /* Full width of the container */
+    max-width: 600px; /* Optional: Adjust max width to fit the screen */
+    gap: 10px; /* Space between the buttons */
+    padding: 10px 0; /* Optional: Adds some padding around the buttons */
+    margin: 0 auto; /* Horizontally centers the container */
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center; /* Center buttons vertically if desired */
+}
+
+/* Style for individual buttons */
+.river-button {
+    flex: 1 1 0; /* Buttons take equal width */
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff; /* Blue background by default */
+    border: 1px solid #007bff; /* Border matching the background */
+    color: white; /* White text */
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+}
+
+/* Hover state for the buttons */
+.river-button:hover {
+    background-color: #0056b3; /* Darker blue when hovering */
+    border-color: #0056b3; /* Matching border color on hover */
+}
+
+/* Active button state (green) */
+.river-button.active {
+    background-color: #4caf50; /* Green background when active */
+    border-color: #4caf50; /* Green border when active */
+}
+
+/* Prevent the buttons from wrapping */
+.button-container {
+    white-space: nowrap;
+}
+
+.range-button {
+    flex: 1 1 0;
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff; /* Blue default */
+    border: 1px solid #ddd;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.range-button:hover {
+    background-color: #0056b3;
+}
+
+/* Active button state (green) */
+.range-button.active {
+    background-color: #4caf50;
+    color: white;
+}
+  
+    </style>
+</head>
+
+  
+<body>
+    <header>
+        <h1>Amber Allen</h1>
+      <h2>A9 - NWM Forcast Application</h2>
+        <p>CE 514 | Winter 2025 | February 20, 2025</p>
+    </header>
+
+    <div class="container">
+        <section>
+  <h1>Great Blue Heron Sighting Forecaster</h1>
+  <h2>About the Creator</h2>
+          <p>Amber Allen is a Ph.D. student in Civil Engineering at Brigham Young University, specializing in transportation emissions and air quality. 
+  She is currently enrolled in CE 514 – Geospatial Software Development, a graduate-level course that explores various tools for creating 
+  and analyzing geospatial data. The course integrates coding languages such as HTML, CSS, and JavaScript to enhance technical proficiency
+  and effectively communicate geospatial concepts. This website is an application of what has been learned during the first unit of study, 
+  including Leaflet, KML, and the National Water Model. </p> <br>
+
+          <h2>About the Data</h2>       
+<p>
+  The <strong>National Water Model (NWM)</strong> is a high-resolution hydrologic modeling system that provides 
+  real-time and forecasted streamflow predictions for over <strong>2.7 million stream reaches</strong> across the United States. 
+  Using the <strong>National Hydrography Dataset (NHDPlus)</strong>, the model simulates detailed river networks to support 
+  water resource planning and emergency response.
+</p>
+
+<p>
+  The NWM offers multiple forecast scenarios, including <strong>short-range (up to 18 hours), medium-range (10 days), 
+  and long-range (30 days) predictions</strong>, along with retrospective analyses for trend studies. By incorporating 
+  real-time observations from <strong>stream gauges, radar, and satellite data</strong>, the model improves accuracy and 
+  reliability in monitoring <strong>floods, droughts, and changing hydrologic conditions</strong>.
+</p>
+
+<p>
+  While the NWM is a valuable tool for <strong>water resource managers, emergency responders, and researchers</strong>, 
+  it is essential to recognize that forecasts are subject to <strong>uncertainties due to weather variability, data 
+  limitations, and model assumptions</strong>. Users should interpret the data carefully and supplement it with 
+  local knowledge and official flood warnings when making critical decisions.
+</p>
+
+          </section>
+    </div>
+
+      <div class="container">
+        <section>
+  <h2>Resources</h2>
+  <p>Learn more about the NWM:</p>
+  <ul>
+    <li><a href="https://water.noaa.gov/about/nwm">NOAA NWM Homepage</a></li>
+    <li><a href="howitworks.html">How This Web App Works</a></li>
+  </ul>
+        </section>
+      </div>
+
+        <div class="container">
+        <section>
+          <h2>Rivers</h2>
+          <p>Select a river section below to view on the map</p>
+<div class="button-container">
+    <button class="river-button" onclick="toggleRiver('Charles', this)">Charles</button>
+    <button class="river-button" onclick="toggleRiver('Concord', this)">Concord</button>
+    <button class="river-button" onclick="toggleRiver('Merrimack', this)">Merrimack</button>
+    <button class="river-button" onclick="toggleRiver('Shawsheen', this)">Shawsheen</button>
+    <button class="river-button" onclick="toggleRiver('Squannacook', this)">Squannacook</button>
+    <button class="river-button" onclick="toggleRiver('Neponset', this)">Neponset</button>
+</div>
+          <h2>Forecast Range Selection</h2>
+  <p>Select a forecast prediction range to view the short-range (~18 hours), medium-range (10 days), and long-range (30 days) forecast for your desired river segment.
+  </p>
+<div class="button-container">
+    <button class="range-button" onclick="toggleRange(this, 'short')">Short Range</button>
+    <button class="range-button" onclick="toggleRange(this, 'medium')">Medium Range</button>
+    <button class="range-button" onclick="toggleRange(this, 'long')">Long Range</button>
+</div>
+          
+        </section>
+      </div>
+<div id="map"></div>
+
+<script>
+    // Initialize the map
+    var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on Massachusetts
+
+    // Add a tile layer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Load KML files
+    var rivers = {
+        Charles: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Charles%20at%20Dover.kml'),
+        Concord: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Concord%20at%20Lowell.kml'),
+        Merrimack: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Merrimack%20at%20Lowell.kml'),
+        Shawsheen: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Shawsheen%20Andover.kml'),
+        Squannacook: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Squannacook%20River.kml'),
+        Neponset: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Neponset%20at%20Norwell.kml')
+    };
+
+    var activeLayer = null; // Track the currently active layer
+
+function toggleRiver(riverName, button) {
+    // Remove 'active' class from all buttons
+    document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
+    
+    // Toggle the river layer on the map
+    if (activeLayer) {
+        map.removeLayer(activeLayer); // Remove the currently active layer
+    }
+
+    if (activeLayer !== rivers[riverName]) {
+        activeLayer = rivers[riverName]; // Set new active layer
+        activeLayer.addTo(map); // Add selected river to the map
+        button.classList.add('active'); // Add active class to the clicked button
+
+     // Zoom to the river's bounding box
+     if (activeLayer.getBounds) {
+        map.fitBounds(activeLayer.getBounds()); 
+        }
+      
+    } else {
+        activeLayer = null; // If the same river is clicked again, remove it
+    }
+}
+
+  // Range Toggle
+  let activeRangeButton = null;
+
+function toggleRange(button, range) {
+    if (activeRangeButton) {
+        activeRangeButton.classList.remove('active');
+    }
+
+    if (activeRangeButton !== button) {
+        activeRangeButton = button;
+        button.classList.add('active');
+    } else {
+        activeRangeButton = null;
+    }
+}
+</script>
+
+
+  <div id="container">
+    <section>
+    <h2>How It Works</h2>
+    <p>
+        The streamflow forecast tool retrieves and displays forecasted water flow data based on a user-provided 
+        <strong>Reach ID</strong>. Here's how it works:
+    </p>
+
+    <h3>1. User Input</h3>
+    <p>
+        The user enters a Reach ID into the input field and clicks the "Get Forecast" button. If no ID is entered, 
+        an alert prompts the user to provide one.
+    </p>
+
+    <h3>2. Fetching Forecast Data</h3>
+    <p>
+        The tool sends a request to the <a href="https://api.water.noaa.gov/nwps/v1" target="_blank">NOAA NWPS API</a> 
+        using the entered Reach ID. If the API responds successfully, the streamflow forecast data is retrieved.
+        If no data is available, an error message is displayed.
+    </p>
+
+    <h3>3. Displaying the Data</h3>
+    <p>
+        The forecast section appears, and the retrieved data is processed into two key components:
+    </p>
+    <ul>
+        <li><strong>A Table:</strong> Displays time-stamped streamflow values.</li>
+        <li><strong>A Chart:</strong> A visually appealing line graph showing streamflow trends over time.</li>
+    </ul>
+
+    <h3>4. Chart Features</h3>
+    <p>
+        The chart uses <a href="https://www.chartjs.org/" target="_blank">Chart.js</a> and includes:
+    </p>
+    <ul>
+        <li>Smooth curved lines for better readability.</li>
+        <li>A blue gradient background representing water flow.</li>
+        <li>Interactive hover effects for precise data points.</li>
+        <li>Custom-styled axis labels and tooltips.</li>
+    </ul>
+
+    <h3>5. Error Handling</h3>
+    <p>
+        If something goes wrong (e.g., an invalid Reach ID or network issues), the tool:
+    </p>
+    <ul>
+        <li>Displays an error message.</li>
+        <li>Clears any previously displayed data to prevent confusion.</li>
+    </ul>
+
+    <h3>Final Result</h3>
+    <p>
+        This tool automates the process of retrieving, formatting, and presenting streamflow forecast data, 
+        making it easy to analyze water flow trends in real time! 🚀
+    </p>
+  </div>
+
+<script>
+  document.querySelectorAll('a').forEach(link => {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+  });
+</script>
+
+</body>
+</html>
