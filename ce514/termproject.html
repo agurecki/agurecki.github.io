@@ -170,6 +170,12 @@ function toggleRiver(riverName, button) {
         activeLayer = rivers[riverName]; // Set new active layer
         activeLayer.addTo(map); // Add selected river to the map
         button.classList.add('active'); // Add active class to the clicked button
+
+     // Zoom to the river's bounding box
+     if (activeLayer.getBounds) {
+        map.fitBounds(activeLayer.getBounds()); 
+        }
+      
     } else {
         activeLayer = null; // If the same river is clicked again, remove it
     }
