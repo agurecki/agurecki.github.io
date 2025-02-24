@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="../style.css"> 
 </head>
 <body>
-    <h1>How the Web Application Works</h1>
+        <header>
+<h1>How the Web Application Works</h1>
+    </header>
     
+    <div class = "container>
+        <section>
     <h2>1. Leaflet Map and KML File Handling</h2>
     <p>The map is initialized using Leaflet, and KML files representing different rivers are loaded when a user selects a river,
       and no river is automatically added to the map.</p>
@@ -32,9 +36,12 @@
     };
 
     var activeLayer = null; // Track the currently active layer
-
     </code>
-    
+            </section>
+</div>
+
+        <div class = "container>
+        <section>
     <h2>2. Selecting a River</h2>
     <p>When a river is selected, its corresponding KML file is added to the map, and previous layers are removed. Each river's reachID is defined
     to make it accessible when called in the function later on. Only one river appears at a time, and when one river is selected the previous one
@@ -75,7 +82,10 @@
         }
     }
     </code>
-    
+            </section>
+</div>
+           <div class = "container>
+        <section>     
     <h2>3. Fetching Forecast Data</h2>
     <p>The function retrieves the selected river’s reach ID and calls the NOAA API to get forecast data based on what river and range is selected. 
     The function calls the selected river's reachID and selected range from the range button, then processes it through the National Water Model API. 
@@ -116,7 +126,10 @@
         }
     }
     </code>
-    
+                </section>
+</div>
+        <div class = "container>
+        <section>
     <h2>4. Displaying the Forecast Data</h2>
     <p>The retrieved streamflow forecast is displayed in a chart. The chart is updated with the flow level (cfs) and times the flow will occur. </p>
     <code>
@@ -133,6 +146,7 @@
         });
     }
     </code>
-    
+                </section>
+</div>
 </body>
 </html>
