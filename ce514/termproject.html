@@ -211,13 +211,20 @@ let selectedRange = null;
 function toggleRiver(riverName, button) {
     document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
 
+    if (activeLayer) {
+        map.removeLayer(activeLayer);
+        activeLayer = null;
+    }
+
     if (selectedRiver === riverName) {
         selectedRiver = null;
         map.setView([42.4072, -71.3824], 8); // Reset map view
     } else {
         selectedRiver = riverName;
         button.classList.add('active');
-        map.fitBounds(rivers[riverName].getBounds());
+        activeLayer = rivers[riverName]; 
+        activeLayer.addTo(map); // Add selected river to the map
+        map.fitBounds(activeLayer.getBounds());
     }
 
     checkAndFetchForecast();
