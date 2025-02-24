@@ -262,11 +262,11 @@ header {
             return;
         }
 
-        const reachId = reachIds[selectedRiver];
+        var reachId = reachIds[selectedRiver];
           console.log('Selected River:', selectedRiver);
           console.log('Reach ID:', reachId);
           console.log('Selected Range:', selectedRange);
-        const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
+        var apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
         console.log('API URL:', apiUrl);
         try {
             const response = await fetch(apiUrl);
