@@ -1,4 +1,3 @@
-updated
 <html>
 <head>
   <title>Great Blue Heron Sighting Predictor</title>
@@ -258,7 +257,7 @@ function toggleRiver(riverName, button) {
         }
     }
 
-  async function getForecast() {
+async function getForecast() {
     if (!selectedRiver || !selectedRange) {
         alert("Please select both a river and a forecast range.");
         return;
@@ -277,7 +276,8 @@ function toggleRiver(riverName, button) {
         console.log('Full API Response:', json_data);
 
         let streamflowData;
-        
+
+        // Access forecast data based on selected range
         if (selectedRange === "short_range" && json_data.shortRange) {
             streamflowData = json_data.shortRange.series?.data || [];
         } else if (selectedRange === "medium_range" && json_data.mediumRange) {
@@ -292,8 +292,34 @@ function toggleRiver(riverName, button) {
             throw new Error("No forecast data available.");
         }
 
-        const timestamps = streamflowData.map(item => item.validTime);
+        let timestamps = streamflowData.map(item => item.validTime);
         const flowValues = streamflowData.map(item => item.flow);
+
+        // Format timestamps to show date as Month Day, Year (MM/DD/YYYY) for medium and long range
+        if (selectedRange === "medium_range" || selectedRange === "long_range") {
+            timestamps = timestamps.map(timestamp => {
+                const date = new Date(timestamp);
+                const month = date.getMonth() + 1; // Months are 0-indexed
+                const day = date.getDate();
+                const year = date.getFullYear();
+                return `${month}/${day}/${year}`;  // Format as MM/DD/YYYY
+            });
+        } else if (selectedRange === "short_range") {
+            // Convert military time to AM/PM format for short range
+            timestamps = timestamps.map(timestamp => {
+                const date = new Date(timestamp);
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const year = date.getFullYear();
+                let hours = date.getHours();
+                const minutes = date.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // Handle midnight (0 hours)
+                const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${ampm}`;
+                return `${month}/${day}/${year} ${formattedTime}`;
+            });
+        }
 
         updateGraph(timestamps, flowValues, selectedRange);
         document.getElementById('forecast-container').style.display = 'block';
@@ -305,46 +331,54 @@ function toggleRiver(riverName, button) {
     }
 }
 
-    // Function to update the graph
-    function updateGraph(timestamps, flowValues, rangeLabel) {
-        const ctx = document.getElementById('streamflowChart').getContext('2d');
-        let chart = Chart.getChart('streamflowChart');
+// Function to update the graph
+function updateGraph(timestamps, flowValues, rangeLabel) {
+    const ctx = document.getElementById('streamflowChart').getContext('2d');
+    let chart = Chart.getChart('streamflowChart');
 
-        if (chart) chart.destroy();
+    if (chart) chart.destroy();
 
-        chart = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: timestamps,
-                datasets: [{
-                    label: `Streamflow Forecast (${rangeLabel.replace('_', ' ').toUpperCase()})`,
-                    data: flowValues,
-                    borderColor: "#0077b6",
-                    borderWidth: 3,
-                    fill: true,
-                    backgroundColor: createGradient(ctx),
-                    tension: 0.4,
-                    pointBackgroundColor: "#ffcc00",
-                    pointBorderColor: "#005f99",
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    pointHoverBackgroundColor: "#ff5733"
-                }]
+    chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: timestamps,
+            datasets: [{
+                label: `Streamflow Forecast (${rangeLabel.replace('_', ' ').toUpperCase()})`,
+                data: flowValues,
+                borderColor: "#0077b6",
+                borderWidth: 3,
+                fill: true,
+                backgroundColor: createGradient(ctx),
+                tension: 0.4,
+                pointBackgroundColor: "#ffcc00",
+                pointBorderColor: "#005f99",
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: "#ff5733"
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { font: { size: 16, weight: "bold" } } },
+                tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { labels: { font: { size: 16, weight: "bold" } } },
-                    tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" }
+            scales: {
+                x: { 
+                    ticks: {
+                        font: { size: 14 },
+                        autoSkip: true,  // Automatically skip labels if they overlap
+                        maxRotation: 0,  // No rotation for date labels
+                        minRotation: 0   // Keep them horizontal
+                    }
                 },
-                scales: {
-                    x: { ticks: { font: { size: 14 } } },
-                    y: { ticks: { font: { size: 14 } } }
-                }
+                y: { ticks: { font: { size: 14 } } }
             }
-        });
-    }
+        }
+    });
+}
+
 
     // Gradient effect for the graph
     function createGradient(ctx) {
