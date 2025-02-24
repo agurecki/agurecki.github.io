@@ -85,28 +85,44 @@ updated
     background-color: #4caf50;
     color: white;
 }
+
+header {
+    position: relative; /* Positioning context for the overlay */
+    background-image: url('https://publicinterestnetwork.org/wp-content/uploads/2024/10/great-blue-heron-in-flight-tim-wilson-via-unsplash-2000x1125.jpg');
+    background-size: cover; 
+    background-position: center;
+    color: white;
+    padding: 20px;
+}
+
+/* Overlay for transparency */
+header::before {
+    content: ''; /* Required for the pseudo-element */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3); /* Adjust the transparency here (0 to 1) */
+    z-index: 1; /* Ensures the overlay sits above the background image */
+}
+
+header h1 {
+    position: relative; /* Ensure the text stays above the overlay */
+    z-index: 2; /* Place text above the overlay */
+}
   
     </style>
+  
 </head>
 
-  
 <body>
     <header>
-        <h1>Amber Allen</h1>
-      <h2>A9 - NWM Forcast Application</h2>
-        <p>CE 514 | Winter 2025 | February 20, 2025</p>
+  <h1>Great Blue Heron Sighting Forecaster</h1>
     </header>
 
     <div class="container">
         <section>
-  <h1>Great Blue Heron Sighting Forecaster</h1>
-  <h2>About the Creator</h2>
-          <p>Amber Allen is a Ph.D. student in Civil Engineering at Brigham Young University, specializing in transportation emissions and air quality. 
-  She is currently enrolled in CE 514 – Geospatial Software Development, a graduate-level course that explores various tools for creating 
-  and analyzing geospatial data. The course integrates coding languages such as HTML, CSS, and JavaScript to enhance technical proficiency
-  and effectively communicate geospatial concepts. This website is an application of what has been learned during the first unit of study, 
-  including Leaflet, KML, and the National Water Model. </p> <br>
-
           <h2>About the Data</h2>       
 <p>
   The <strong>National Water Model (NWM)</strong> is a high-resolution hydrologic modeling system that provides 
@@ -326,65 +342,18 @@ updated
         return gradient;
     }
 </script>
-
-
-
+  
   <div id="container">
     <section>
-    <h2>How It Works</h2>
-    <p>
-        The streamflow forecast tool retrieves and displays forecasted water flow data based on a user-provided 
-        <strong>Reach ID</strong>. Here's how it works:
-    </p>
-
-    <h3>1. User Input</h3>
-    <p>
-        The user enters a Reach ID into the input field and clicks the "Get Forecast" button. If no ID is entered, 
-        an alert prompts the user to provide one.
-    </p>
-
-    <h3>2. Fetching Forecast Data</h3>
-    <p>
-        The tool sends a request to the <a href="https://api.water.noaa.gov/nwps/v1" target="_blank">NOAA NWPS API</a> 
-        using the entered Reach ID. If the API responds successfully, the streamflow forecast data is retrieved.
-        If no data is available, an error message is displayed.
-    </p>
-
-    <h3>3. Displaying the Data</h3>
-    <p>
-        The forecast section appears, and the retrieved data is processed into two key components:
-    </p>
-    <ul>
-        <li><strong>A Table:</strong> Displays time-stamped streamflow values.</li>
-        <li><strong>A Chart:</strong> A visually appealing line graph showing streamflow trends over time.</li>
-    </ul>
-
-    <h3>4. Chart Features</h3>
-    <p>
-        The chart uses <a href="https://www.chartjs.org/" target="_blank">Chart.js</a> and includes:
-    </p>
-    <ul>
-        <li>Smooth curved lines for better readability.</li>
-        <li>A blue gradient background representing water flow.</li>
-        <li>Interactive hover effects for precise data points.</li>
-        <li>Custom-styled axis labels and tooltips.</li>
-    </ul>
-
-    <h3>5. Error Handling</h3>
-    <p>
-        If something goes wrong (e.g., an invalid Reach ID or network issues), the tool:
-    </p>
-    <ul>
-        <li>Displays an error message.</li>
-        <li>Clears any previously displayed data to prevent confusion.</li>
-    </ul>
-
-    <h3>Final Result</h3>
-    <p>
-        This tool automates the process of retrieving, formatting, and presenting streamflow forecast data, 
-        making it easy to analyze water flow trends in real time! 🚀
-    </p>
+      <h2>About the Creator</h2>
+          <p>Amber Allen is a Ph.D. student in Civil Engineering at Brigham Young University, specializing in transportation emissions and air quality. 
+  She is currently enrolled in CE 514 – Geospatial Software Development, a graduate-level course that explores various tools for creating 
+  and analyzing geospatial data. The course integrates coding languages such as HTML, CSS, and JavaScript to enhance technical proficiency
+  and effectively communicate geospatial concepts. This website is an application of what has been learned during the first unit of study, 
+  including Leaflet, KML, and the National Water Model. </p>
+    </section>
   </div>
+  
 
 <script>
   document.querySelectorAll('a').forEach(link => {
