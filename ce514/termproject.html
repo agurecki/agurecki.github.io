@@ -222,26 +222,28 @@ header {
     let selectedRiver = null;
     let selectedRange = null;
   
-    // Function to handle river selection
-    function toggleRiver(riverName, button) {
-        document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
+// Ensure when a river is changed, previous selections are reset
+function toggleRiver(riverName, button) {
+    document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
 
-        if (activeLayer) {
-            map.removeLayer(activeLayer);
-            activeLayer = null;
-        }
-
-        if (selectedRiver === riverName) {
-            selectedRiver = null;
-            map.setView([42.4072, -71.3824], 8); // Reset map view
-        } else {
-            selectedRiver = riverName;
-            button.classList.add('active');
-            activeLayer = rivers[riverName]; 
-            activeLayer.addTo(map); // Add selected river to the map
-            map.fitBounds(activeLayer.getBounds());
-        }
+    if (activeLayer) {
+        map.removeLayer(activeLayer);
+        activeLayer = null;
     }
+
+    if (selectedRiver === riverName) {
+        selectedRiver = null;
+        selectedRange = null;  // Reset range selection when changing rivers
+        document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('active')); // Unselect ranges
+        map.setView([42.4072, -71.3824], 8); // Reset map view
+    } else {
+        selectedRiver = riverName;
+        button.classList.add('active');
+        activeLayer = rivers[riverName];
+        activeLayer.addTo(map);
+        map.fitBounds(activeLayer.getBounds());
+    }
+}
 
     // Function to handle range selection
     function toggleRange(range, button) {
@@ -255,7 +257,7 @@ header {
         }
     }
 
-    async function getForecast() {
+   async function getForecast() {
     if (!selectedRiver || !selectedRange) {
         alert("Please select both a river and a forecast range.");
         return;
@@ -269,17 +271,9 @@ header {
         "medium_range": "mediumRange",
         "long_range": "longRange"
     };
-    
+
     var jsonRangeKey = rangeKeyMap[selectedRange] || selectedRange; // Default to selectedRange if not mapped
-
-    console.log('Selected River:', selectedRiver);
-    console.log('Reach ID:', reachId);
-    console.log('Selected Range:', selectedRange);
-    console.log('Mapped JSON Key:', jsonRangeKey);
-
     var apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
-    alert(apiUrl);
-    console.log('API URL:', apiUrl);
 
     try {
         const response = await fetch(apiUrl);
@@ -308,7 +302,6 @@ header {
         document.getElementById('forecast-container').style.display = 'none';
     }
 }
-
 
     // Function to update the graph
     function updateGraph(timestamps, flowValues, rangeLabel) {
