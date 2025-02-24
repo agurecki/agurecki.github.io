@@ -164,6 +164,8 @@ updated
     <button class="range-button" onclick="toggleRange('long_range', this)">Long Range</button>
 </div>
 
+<button id="get-forecast-btn" onclick="getForecast()">Get Forecast</button>
+          
 <div id="forecast-container" style="display: none;">
     <canvas id="streamflowChart"></canvas>
 </div>  
@@ -193,142 +195,138 @@ updated
 
     var activeLayer = null; // Track the currently active layer
 
-  // Reach IDs for each river
-const reachIds = {
-    "Squannacook": 6076039,
-    "Concord": 6771379,
-    "Merrimack": 6746184,
-    "Shawsheen": 6744972,
-    "Charles": 5867435,
-    "Neponset": 5867537
-};
+    // Reach IDs for each river
+    const reachIds = {
+        "Squannacook": 6076039,
+        "Concord": 6771379,
+        "Merrimack": 6746184,
+        "Shawsheen": 6744972,
+        "Charles": 5867435,
+        "Neponset": 5867537
+    };
 
-  // Variables to store selected river and range
-let selectedRiver = null;
-let selectedRange = null;
+    // Variables to store selected river and range
+    let selectedRiver = null;
+    let selectedRange = null;
   
-// Function to handle river selection
-function toggleRiver(riverName, button) {
-    document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
+    // Function to handle river selection
+    function toggleRiver(riverName, button) {
+        document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
 
-    if (activeLayer) {
-        map.removeLayer(activeLayer);
-        activeLayer = null;
-    }
-
-    if (selectedRiver === riverName) {
-        selectedRiver = null;
-        map.setView([42.4072, -71.3824], 8); // Reset map view
-    } else {
-        selectedRiver = riverName;
-        button.classList.add('active');
-        activeLayer = rivers[riverName]; 
-        activeLayer.addTo(map); // Add selected river to the map
-        map.fitBounds(activeLayer.getBounds());
-    }
-
-    checkAndFetchForecast();
-}
-
-// Function to handle range selection
-function toggleRange(range, button) {
-    document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('active'));
-
-    if (selectedRange === range) {
-        selectedRange = null;
-    } else {
-        selectedRange = range;
-        button.classList.add('active');
-    }
-
-    checkAndFetchForecast();
-}
-
-  // Function to fetch and display forecast data
-async function checkAndFetchForecast() {
-    if (!selectedRiver || !selectedRange) {
-        document.getElementById('forecast-container').style.display = 'none';
-        return;
-    }
-
-    const reachId = reachIds[selectedRiver];
-    const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
-
-    try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
+        if (activeLayer) {
+            map.removeLayer(activeLayer);
+            activeLayer = null;
         }
 
-        const json_data = await response.json();
-        if (!json_data[selectedRange] || !json_data[selectedRange].series || json_data[selectedRange].series.data.length === 0) {
-            throw new Error("No forecast data available.");
+        if (selectedRiver === riverName) {
+            selectedRiver = null;
+            map.setView([42.4072, -71.3824], 8); // Reset map view
+        } else {
+            selectedRiver = riverName;
+            button.classList.add('active');
+            activeLayer = rivers[riverName]; 
+            activeLayer.addTo(map); // Add selected river to the map
+            map.fitBounds(activeLayer.getBounds());
+        }
+    }
+
+    // Function to handle range selection
+    function toggleRange(range, button) {
+        document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('active'));
+
+        if (selectedRange === range) {
+            selectedRange = null;
+        } else {
+            selectedRange = range;
+            button.classList.add('active');
+        }
+    }
+
+    // Function to fetch and display forecast data
+    async function getForecast() {
+        if (!selectedRiver || !selectedRange) {
+            alert("Please select both a river and a forecast range.");
+            return;
         }
 
-        const streamflowData = json_data[selectedRange].series.data;
-        const timestamps = streamflowData.map(item => item.validTime);
-        const flowValues = streamflowData.map(item => item.flow);
+        const reachId = reachIds[selectedRiver];
+        const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
 
-        updateGraph(timestamps, flowValues, selectedRange);
-        document.getElementById('forecast-container').style.display = 'block';
-
-    } catch (error) {
-        console.error('Error fetching forecast:', error);
-        alert("Error fetching forecast: " + error.message);
-        document.getElementById('forecast-container').style.display = 'none';
-    }
-}
-
-// Function to update the graph
-function updateGraph(timestamps, flowValues, rangeLabel) {
-    const ctx = document.getElementById('streamflowChart').getContext('2d');
-    let chart = Chart.getChart('streamflowChart');
-
-    if (chart) chart.destroy();
-
-    chart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: timestamps,
-            datasets: [{
-                label: `Streamflow Forecast (${rangeLabel.replace('_', ' ').toUpperCase()})`,
-                data: flowValues,
-                borderColor: "#0077b6",
-                borderWidth: 3,
-                fill: true,
-                backgroundColor: createGradient(ctx),
-                tension: 0.4,
-                pointBackgroundColor: "#ffcc00",
-                pointBorderColor: "#005f99",
-                pointRadius: 5,
-                pointHoverRadius: 8,
-                pointHoverBackgroundColor: "#ff5733"
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { labels: { font: { size: 16, weight: "bold" } } },
-                tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" }
-            },
-            scales: {
-                x: { ticks: { font: { size: 14 } } },
-                y: { ticks: { font: { size: 14 } } }
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
             }
-        }
-    });
-}
 
-// Gradient effect for the graph
-function createGradient(ctx) {
-    let gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
-    gradient.addColorStop(0, "rgba(0, 119, 182, 0.5)");
-    gradient.addColorStop(1, "rgba(173, 216, 230, 0.2)");
-    return gradient;
-}
-  
+            const json_data = await response.json();
+            if (!json_data[selectedRange] || !json_data[selectedRange].series || json_data[selectedRange].series.data.length === 0) {
+                throw new Error("No forecast data available.");
+            }
+
+            const streamflowData = json_data[selectedRange].series.data;
+            const timestamps = streamflowData.map(item => item.validTime);
+            const flowValues = streamflowData.map(item => item.flow);
+
+            updateGraph(timestamps, flowValues, selectedRange);
+            document.getElementById('forecast-container').style.display = 'block';
+
+        } catch (error) {
+            console.error('Error fetching forecast:', error);
+            alert("Error fetching forecast: " + error.message);
+            document.getElementById('forecast-container').style.display = 'none';
+        }
+    }
+
+    // Function to update the graph
+    function updateGraph(timestamps, flowValues, rangeLabel) {
+        const ctx = document.getElementById('streamflowChart').getContext('2d');
+        let chart = Chart.getChart('streamflowChart');
+
+        if (chart) chart.destroy();
+
+        chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: timestamps,
+                datasets: [{
+                    label: `Streamflow Forecast (${rangeLabel.replace('_', ' ').toUpperCase()})`,
+                    data: flowValues,
+                    borderColor: "#0077b6",
+                    borderWidth: 3,
+                    fill: true,
+                    backgroundColor: createGradient(ctx),
+                    tension: 0.4,
+                    pointBackgroundColor: "#ffcc00",
+                    pointBorderColor: "#005f99",
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    pointHoverBackgroundColor: "#ff5733"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { font: { size: 16, weight: "bold" } } },
+                    tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" }
+                },
+                scales: {
+                    x: { ticks: { font: { size: 14 } } },
+                    y: { ticks: { font: { size: 14 } } }
+                }
+            }
+        });
+    }
+
+    // Gradient effect for the graph
+    function createGradient(ctx) {
+        let gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+        gradient.addColorStop(0, "rgba(0, 119, 182, 0.5)");
+        gradient.addColorStop(1, "rgba(173, 216, 230, 0.2)");
+        return gradient;
+    }
 </script>
+
 
 
   <div id="container">
