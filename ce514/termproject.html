@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
       <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
   <link rel="stylesheet" href="../style.css">  
 
 <style>
@@ -362,7 +363,41 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
             maintainAspectRatio: false,
             plugins: {
                 legend: { labels: { font: { size: 16, weight: "bold" } } },
-                tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" }
+                tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" },
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            yMin: 200, // Position of the line
+                            yMax: 200,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            label: {
+                                display: true,
+                                content: "Herons Likely!",
+                                position: "start",
+                                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                                font: { size: 14, weight: 'bold' }
+                            }
+                        },
+                        heronsLikely: {
+                            type: 'label',
+                            xValue: timestamps[Math.floor(timestamps.length / 2)], // Center horizontally
+                            yValue: 190, // Below the line
+                            content: "Herons Likely!",
+                            color: "green",
+                            font: { size: 16, weight: "bold" }
+                        },
+                        heronsUnlikely: {
+                            type: 'label',
+                            xValue: timestamps[Math.floor(timestamps.length / 2)], // Center horizontally
+                            yValue: 210, // Above the line
+                            content: "Herons Unlikely",
+                            color: "red",
+                            font: { size: 16, weight: "bold" }
+                        }
+                    }
+                }
             },
             scales: {
                 x: { 
@@ -378,6 +413,7 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
         }
     });
 }
+
 
 
     // Gradient effect for the graph
@@ -444,6 +480,6 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
     link.setAttribute('rel', 'noopener noreferrer');
   });
 </script>
-
+  
 </body>
 </html>
