@@ -281,9 +281,9 @@ function toggleRiver(riverName, button) {
         if (selectedRange === "short_range" && json_data.shortRange) {
             streamflowData = json_data.shortRange.series?.data || [];
         } else if (selectedRange === "medium_range" && json_data.mediumRange) {
-            streamflowData = json_data.mediumRange.series?.data || [];
+            streamflowData = json_data.mediumRange.mean?.data || [];
         } else if (selectedRange === "long_range" && json_data.longRange) {
-            streamflowData = json_data.longRange.series?.data || [];
+            streamflowData = json_data.longRange.mean?.data || [];
         } else {
             throw new Error("No forecast data available for this range.");
         }
