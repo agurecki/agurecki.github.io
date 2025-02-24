@@ -1,222 +1,413 @@
-updated
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>River Forecast</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+  <title>Great Blue Heron Sighting Predictor</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <!-- Link to external Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script> 
+  <link rel="stylesheet" href="../style.css">  
 
-    <div id="forecast-container" style="display:none;">
-        <canvas id="forecast-chart"></canvas>
+<style>
+
+    .centered-paragraph {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 24px;
+  }
+  
+        #map {
+            height: 600px;
+        }
+        #forecast-container {
+            display: none;
+            width: 100%;
+            height: 400px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Evenly distribute buttons with space between */
+    width: 100%; /* Full width of the container */
+    max-width: 600px; /* Optional: Adjust max width to fit the screen */
+    gap: 10px; /* Space between the buttons */
+    padding: 10px 0; /* Optional: Adds some padding around the buttons */
+    margin: 0 auto; /* Horizontally centers the container */
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center; /* Center buttons vertically if desired */
+}
+
+    .button-link {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .button-link:hover {
+    background-color: #0056b3;
+  }
+
+/* Style for individual buttons */
+.river-button {
+    flex: 1 1 0; /* Buttons take equal width */
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff; /* Blue background by default */
+    border: 1px solid #007bff; /* Border matching the background */
+    color: white; /* White text */
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+}
+
+/* Hover state for the buttons */
+.river-button:hover {
+    background-color: #0056b3; /* Darker blue when hovering */
+    border-color: #0056b3; /* Matching border color on hover */
+}
+
+/* Active button state (green) */
+.river-button.active {
+    background-color: #4caf50; /* Green background when active */
+    border-color: #4caf50; /* Green border when active */
+}
+
+/* Prevent the buttons from wrapping */
+.button-container {
+    white-space: nowrap;
+}
+
+.range-button {
+    flex: 1 1 0;
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff; /* Blue default */
+    border: 1px solid #ddd;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.range-button:hover {
+    background-color: #0056b3;
+}
+
+/* Active button state (green) */
+.range-button.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+body {
+    background-image: url('https://publicinterestnetwork.org/wp-content/uploads/2024/10/great-blue-heron-in-flight-tim-wilson-via-unsplash-2000x1125.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.5); /* Optional: adds transparency behind header content */
+    padding: 40px 20px;
+    text-align: center;
+}
+
+  section {
+    background-color: rgba(0, 0, 0, 0.5);  /* semi-transparent black background */
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+ </style>
+  
+</head>
+
+<body>
+    <header>
+  <h1>Great Blue Heron Sighting Forecaster</h1>
+    </header>
+
+    <div class="container">
+        <section>
+<h2>Predicting Blue Heron Sightings</h2>
+    <p>Blue herons are often spotted in areas with lower water levels and calmer waters, particularly in marshes or wetlands. 
+      As water levels decrease, more of the marshland is exposed, creating ideal feeding and nesting grounds for the herons. 
+      Calm, shallow waters also provide a more suitable environment for these birds to hunt for fish and other prey.</p>
+    <p>By analyzing water levels and water conditions in real-time, this application helps users predict the most likely areas 
+      where blue herons may be sighted, improving the chances of observing these majestic birds.</p>
+          <div class="button-container">
+            <a href="https://www.audubon.org/field-guide/bird/great-blue-heron" class="button-link">Learn More About Blue Herons</a>
+          </div>
+          </section>
     </div>
 
-    <!-- Buttons for each forecast range -->
-    <button onclick="getShortRangeForecast()">Short-range Forecast</button>
-    <button onclick="getMediumRangeForecast()">Medium-range Forecast</button>
-    <button onclick="getLongRangeForecast()">Long-range Forecast</button>
+     <div class="container">
+        <section>
+          <h2>Rivers</h2>
+              <div class="centered-paragraph">
+      <p>Select a river section below to view on the map</p>
+    </div>
 
-    <script>
-        // Function to get Short-range forecast
-        async function getShortRangeForecast() {
-            const reachId = '6746184'; // Merrimack River at Lowell Reach ID
-            const forecastContainer = document.getElementById('forecast-container');
-            forecastContainer.style.display = 'block';
+<div class="button-container">
+    <button class="river-button" onclick="toggleRiver('Charles', this)">Charles</button>
+    <button class="river-button" onclick="toggleRiver('Concord', this)">Concord</button>
+    <button class="river-button" onclick="toggleRiver('Merrimack', this)">Merrimack</button>
+    <button class="river-button" onclick="toggleRiver('Shawsheen', this)">Shawsheen</button>
+    <button class="river-button" onclick="toggleRiver('Squannacook', this)">Squannacook</button>
+    <button class="river-button" onclick="toggleRiver('Neponset', this)">Neponset</button>
+</div>
+          <h2>Forecast Range Selection</h2>
+          <div class="centered-paragraph">
+  <p>Select a forecast prediction range to view the short-range (~18 hours), medium-range (10 days), and long-range (30 days) forecast for your desired river segment.
+  </p>
+             </div>
+<div class="button-container">
+    <button class="range-button" onclick="toggleRange('short_range', this)">Short Range</button>
+    <button class="range-button" onclick="toggleRange('medium_range', this)">Medium Range</button>
+    <button class="range-button" onclick="toggleRange('long_range', this)">Long Range</button>
+</div>
 
-            try {
-                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=short_range`;
-                console.log('Fetching short-range data...');
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
-                }
+<button id="get-forecast-btn" onclick="getForecast()">Get Forecast</button>
+          
+<div id="forecast-container" style="display: none;">
+    <canvas id="streamflowChart"></canvas>
+</div>  
+        </section>
+      </div>
+  
+<div id="map"></div>
 
-                const json_data = await response.json();
-                console.log('API response:', json_data);
+<script>
+    // Initialize the map
+    var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on Massachusetts
 
-                // Check if the relevant data is available
-                if (!json_data.shortRange || !json_data.shortRange.series || !json_data.shortRange.series.data || json_data.shortRange.series.data.length === 0) {
-                    throw new Error('No short-range forecast data available.');
-                }
+    // Add a tile layer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-                const streamflowData = json_data.shortRange.series.data;
-                const timestamps = streamflowData.map(item => item.validTime);
-                const flowValues = streamflowData.map(item => item.flow);
+    // Load KML files
+    var rivers = {
+        Charles: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Charles%20at%20Dover.kml'),
+        Concord: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Concord%20at%20Lowell.kml'),
+        Merrimack: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Merrimack%20at%20Lowell.kml'),
+        Shawsheen: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Shawsheen%20Andover.kml'),
+        Squannacook: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Squannacook%20River.kml'),
+        Neponset: omnivore.kml('https://raw.githubusercontent.com/agurecki/agurecki.github.io/refs/heads/main/ce514/Neponset%20at%20Norwell.kml')
+    };
 
-                const chartData = {
-                    labels: timestamps,
-                    datasets: [{
-                        label: 'Flow (cfs) - Short-range',
-                        data: flowValues,
-                        borderColor: 'rgb(75, 192, 192)',
-                        fill: false
-                    }]
-                };
+    var activeLayer = null; // Track the currently active layer
 
-                const ctx = document.getElementById('forecast-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: chartData,
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: {
-                                type: 'category',
-                                title: {
-                                    display: true,
-                                    text: 'Time'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Flow (cfs)'
-                                }
-                            }
-                        }
-                    }
-                });
+    // Reach IDs for each river
+    const reachIds = {
+        "Squannacook": 6076039,
+        "Concord": 6771379,
+        "Merrimack": 6746184,
+        "Shawsheen": 6744972,
+        "Charles": 5867435,
+        "Neponset": 5867537
+    };
 
-            } catch (error) {
-                console.error(error);
-                alert(`Error: ${error.message}`);
-            }
+    // Variables to store selected river and range
+    let selectedRiver = null;
+    let selectedRange = null;
+  
+// Ensure when a river is changed, previous selections are reset
+function toggleRiver(riverName, button) {
+    document.querySelectorAll('.river-button').forEach(btn => btn.classList.remove('active'));
+
+    if (activeLayer) {
+        map.removeLayer(activeLayer);
+        activeLayer = null;
+    }
+
+    if (selectedRiver === riverName) {
+        selectedRiver = null;
+        selectedRange = null;  // Reset range selection when changing rivers
+        document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('active')); // Unselect ranges
+        map.setView([42.4072, -71.3824], 8); // Reset map view
+    } else {
+        selectedRiver = riverName;
+        button.classList.add('active');
+        activeLayer = rivers[riverName];
+        activeLayer.addTo(map);
+        map.fitBounds(activeLayer.getBounds());
+    }
+}
+
+    // Function to handle range selection
+    function toggleRange(range, button) {
+        document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('active'));
+
+        if (selectedRange === range) {
+            selectedRange = null;
+        } else {
+            selectedRange = range;
+            button.classList.add('active');
+        }
+    }
+
+   async function getForecast() {
+    if (!selectedRiver || !selectedRange) {
+        alert("Please select both a river and a forecast range.");
+        return;
+    }
+
+    var reachId = reachIds[selectedRiver];
+
+    // Map selectedRange to the JSON response format
+    var rangeKeyMap = {
+        "short_range": "shortRange",
+        "medium_range": "mediumRange",
+        "long_range": "longRange"
+    };
+
+    var jsonRangeKey = rangeKeyMap[selectedRange] || selectedRange; // Default to selectedRange if not mapped
+    var apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
         }
 
-        // Function to get Medium-range forecast
-        async function getMediumRangeForecast() {
-            const reachId = '6746184'; // Merrimack River at Lowell Reach ID
-            const forecastContainer = document.getElementById('forecast-container');
-            forecastContainer.style.display = 'block';
+        const json_data = await response.json();
+        console.log('API Response:', json_data);
 
-            try {
-                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=medium_range`;
-                console.log('Fetching medium-range data...');
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
-                }
-
-                const json_data = await response.json();
-                console.log('API response:', json_data);
-
-                // Check if the relevant data is available
-                if (!json_data.mediumRange || !json_data.mediumRange.series || !json_data.mediumRange.series.data || json_data.mediumRange.series.data.length === 0) {
-                    throw new Error('No medium-range forecast data available.');
-                }
-
-                const streamflowData = json_data.mediumRange.series.data;
-                const timestamps = streamflowData.map(item => item.validTime);
-                const flowValues = streamflowData.map(item => item.flow);
-
-                const chartData = {
-                    labels: timestamps,
-                    datasets: [{
-                        label: 'Flow (cfs) - Medium-range',
-                        data: flowValues,
-                        borderColor: 'rgb(75, 192, 192)',
-                        fill: false
-                    }]
-                };
-
-                const ctx = document.getElementById('forecast-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: chartData,
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: {
-                                type: 'category',
-                                title: {
-                                    display: true,
-                                    text: 'Time'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Flow (cfs)'
-                                }
-                            }
-                        }
-                    }
-                });
-
-            } catch (error) {
-                console.error(error);
-                alert(`Error: ${error.message}`);
-            }
+        // Use mapped jsonRangeKey to access the correct series
+        if (!json_data[jsonRangeKey] || !json_data[jsonRangeKey].series || json_data[jsonRangeKey].series.data.length === 0) {
+            throw new Error("No forecast data available.");
         }
 
-        // Function to get Long-range forecast
-        async function getLongRangeForecast() {
-            const reachId = '6746184'; // Merrimack River at Lowell Reach ID
-            const forecastContainer = document.getElementById('forecast-container');
-            forecastContainer.style.display = 'block';
+        const streamflowData = json_data[jsonRangeKey].series.data;
+        const timestamps = streamflowData.map(item => item.validTime);
+        const flowValues = streamflowData.map(item => item.flow);
 
-            try {
-                const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=long_range`;
-                console.log('Fetching long-range data...');
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error status: ${response.status} - ${response.statusText}`);
+        updateGraph(timestamps, flowValues, selectedRange);
+        document.getElementById('forecast-container').style.display = 'block';
+
+    } catch (error) {
+        console.error('Error fetching forecast:', error);
+        alert("Error fetching forecast: " + error.message);
+        document.getElementById('forecast-container').style.display = 'none';
+    }
+}
+
+    // Function to update the graph
+    function updateGraph(timestamps, flowValues, rangeLabel) {
+        const ctx = document.getElementById('streamflowChart').getContext('2d');
+        let chart = Chart.getChart('streamflowChart');
+
+        if (chart) chart.destroy();
+
+        chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: timestamps,
+                datasets: [{
+                    label: `Streamflow Forecast (${rangeLabel.replace('_', ' ').toUpperCase()})`,
+                    data: flowValues,
+                    borderColor: "#0077b6",
+                    borderWidth: 3,
+                    fill: true,
+                    backgroundColor: createGradient(ctx),
+                    tension: 0.4,
+                    pointBackgroundColor: "#ffcc00",
+                    pointBorderColor: "#005f99",
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    pointHoverBackgroundColor: "#ff5733"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { font: { size: 16, weight: "bold" } } },
+                    tooltip: { backgroundColor: "rgba(0, 0, 0, 0.8)" }
+                },
+                scales: {
+                    x: { ticks: { font: { size: 14 } } },
+                    y: { ticks: { font: { size: 14 } } }
                 }
-
-                const json_data = await response.json();
-                console.log('API response:', json_data);
-
-                // Check if the relevant data is available
-                if (!json_data.longRange || !json_data.longRange.series || !json_data.longRange.series.data || json_data.longRange.series.data.length === 0) {
-                    throw new Error('No long-range forecast data available.');
-                }
-
-                const streamflowData = json_data.longRange.series.data;
-                const timestamps = streamflowData.map(item => item.validTime);
-                const flowValues = streamflowData.map(item => item.flow);
-
-                const chartData = {
-                    labels: timestamps,
-                    datasets: [{
-                        label: 'Flow (cfs) - Long-range',
-                        data: flowValues,
-                        borderColor: 'rgb(75, 192, 192)',
-                        fill: false
-                    }]
-                };
-
-                const ctx = document.getElementById('forecast-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: chartData,
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: {
-                                type: 'category',
-                                title: {
-                                    display: true,
-                                    text: 'Time'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Flow (cfs)'
-                                }
-                            }
-                        }
-                    }
-                });
-
-            } catch (error) {
-                console.error(error);
-                alert(`Error: ${error.message}`);
             }
-        }
-    </script>
+        });
+    }
+
+    // Gradient effect for the graph
+    function createGradient(ctx) {
+        let gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+        gradient.addColorStop(0, "rgba(0, 119, 182, 0.5)");
+        gradient.addColorStop(1, "rgba(173, 216, 230, 0.2)");
+        return gradient;
+    }
+</script>
+
+    <div class="container">
+        <section>
+          <h2>About the Data</h2>       
+<p>
+  The <strong>National Water Model (NWM)</strong> is a high-resolution hydrologic modeling system that provides 
+  real-time and forecasted streamflow predictions for over <strong>2.7 million stream reaches</strong> across the United States. 
+  Using the <strong>National Hydrography Dataset (NHDPlus)</strong>, the model simulates detailed river networks to support 
+  water resource planning and emergency response.
+</p>
+
+<p>
+  The NWM offers multiple forecast scenarios, including <strong>short-range (up to 18 hours), medium-range (10 days), 
+  and long-range (30 days) predictions</strong>, along with retrospective analyses for trend studies. By incorporating 
+  real-time observations from <strong>stream gauges, radar, and satellite data</strong>, the model improves accuracy and 
+  reliability in monitoring <strong>floods, droughts, and changing hydrologic conditions</strong>.
+</p>
+
+<p>
+  While the NWM is a valuable tool for <strong>water resource managers, emergency responders, and researchers</strong>, 
+  it is essential to recognize that forecasts are subject to <strong>uncertainties due to weather variability, data 
+  limitations, and model assumptions</strong>. Users should interpret the data carefully and supplement it with 
+  local knowledge and official flood warnings when making critical decisions.
+</p>
+
+          </section>
+    </div>
+  
+<div class="container">
+  <section>
+    <h2>Resources</h2>
+    <div class="button-container">
+      <a href="https://water.noaa.gov/about/nwm" class="button-link">NOAA NWM Homepage</a>
+      <a href="howitworks.html" class="button-link">How This Web App Works</a>
+    </div>
+  </section>
+</div>
+  
+  <div id="container">
+    <section>
+      <h2>About the Creator</h2>
+          <p>Amber Allen is a Ph.D. student in Civil Engineering at Brigham Young University, specializing in transportation emissions and air quality. 
+  She is currently enrolled in CE 514 – Geospatial Software Development, a graduate-level course that explores various tools for creating 
+  and analyzing geospatial data. The course integrates coding languages such as HTML, CSS, and JavaScript to enhance technical proficiency
+  and effectively communicate geospatial concepts. This website is an application of what has been learned during the first unit of study, 
+  including Leaflet, KML, and the National Water Model. </p>
+    </section>
+  </div>
+  
+
+<script>
+  document.querySelectorAll('a').forEach(link => {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+  });
+</script>
 
 </body>
 </html>
