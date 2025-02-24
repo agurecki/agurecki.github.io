@@ -15,7 +15,7 @@
         <section>
             <h2>1. Leaflet Map and KML File Handling</h2>
             <p>The map is initialized using Leaflet, and KML files representing different rivers are loaded when a user selects a river. No river is automatically added to the map.</p>
-            <code>
+            <pre><code>
                 // Initialize the map
                 var map = L.map('map').setView([42.3601, -71.0589], 9); // Center on Massachusetts
 
@@ -35,7 +35,7 @@
                 };
 
                 var activeLayer = null; // Track the currently active layer
-            </code>
+            </code></pre>
         </section>
     </div>
 
@@ -43,7 +43,7 @@
         <section>
             <h2>2. Selecting a River</h2>
             <p>When a river is selected, its corresponding KML file is added to the map, and previous layers are removed. Each river's reachID is defined to make it accessible when called in the function later on. Only one river appears at a time, and when one river is selected, the previous one is removed. The map zooms to the location of the selected river. If no river is selected, the map returns to the original view.</p>
-            <code>
+           <pre><code>
                 // Reach IDs for each river
                 const reachIds = {
                     "Squannacook": 6076039,
@@ -78,7 +78,7 @@
                         map.fitBounds(activeLayer.getBounds());
                     }
                 }
-            </code>
+            </code></pre>
         </section>
     </div>
 
@@ -86,7 +86,7 @@
         <section>     
             <h2>3. Fetching Forecast Data</h2>
             <p>The function retrieves the selected river’s reach ID and calls the NOAA API to get forecast data based on the selected river and range. If there is no data or an error occurs, an error message is returned.</p>
-            <code>
+            <pre><code>
                 // Function to fetch and display forecast data
                 async function getForecast() {
                     if (!selectedRiver || !selectedRange) {
@@ -121,7 +121,7 @@
                         document.getElementById('forecast-container').style.display = 'none';
                     }
                 }
-            </code>
+            </code></pre>
         </section>
     </div>
 
@@ -129,7 +129,7 @@
         <section>
             <h2>4. Displaying the Forecast Data</h2>
             <p>The retrieved streamflow forecast is displayed in a chart. The chart is updated with the flow level (cfs) and times the flow will occur.</p>
-            <code>
+            <pre><code>
                 function updateGraph(streamflowData) {
                     const timestamps = streamflowData.map(item => item.validTime);
                     const flowValues = streamflowData.map(item => item.flow);
@@ -142,7 +142,7 @@
                         }
                     });
                 }
-            </code>
+            </code></pre>
         </section>
     </div>
 </body>
