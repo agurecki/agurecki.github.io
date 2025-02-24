@@ -267,6 +267,7 @@ header {
           console.log('Reach ID:', reachId);
           console.log('Selected Range:', selectedRange);
         var apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${selectedRange}`;
+      alert(apiUrl)
         console.log('API URL:', apiUrl);
         try {
             const response = await fetch(apiUrl);
