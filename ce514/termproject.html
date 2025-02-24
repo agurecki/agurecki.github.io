@@ -9,6 +9,13 @@
   <link rel="stylesheet" href="../style.css">  
 
 <style>
+
+    .centered-paragraph {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 24px;
+  }
+  
         #map {
             height: 600px;
         }
@@ -160,7 +167,10 @@ header {
      <div class="container">
         <section>
           <h2>Rivers</h2>
-          <p>Select a river section below to view on the map</p>
+              <div class="centered-paragraph">
+      <p>Select a river section below to view on the map</p>
+    </div>
+
 <div class="button-container">
     <button class="river-button" onclick="toggleRiver('Charles', this)">Charles</button>
     <button class="river-button" onclick="toggleRiver('Concord', this)">Concord</button>
@@ -170,8 +180,10 @@ header {
     <button class="river-button" onclick="toggleRiver('Neponset', this)">Neponset</button>
 </div>
           <h2>Forecast Range Selection</h2>
+          <div class="centered-paragraph">
   <p>Select a forecast prediction range to view the short-range (~18 hours), medium-range (10 days), and long-range (30 days) forecast for your desired river segment.
   </p>
+             </div>
 <div class="button-container">
     <button class="range-button" onclick="toggleRange('short_range', this)">Short Range</button>
     <button class="range-button" onclick="toggleRange('medium_range', this)">Medium Range</button>
