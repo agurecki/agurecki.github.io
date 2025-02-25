@@ -339,6 +339,12 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
 
     if (chart) chart.destroy();
 
+    // Find the min and max Y values to calculate 25% and 75% positions
+    const minY = Math.min(...flowValues);
+    const maxY = Math.max(...flowValues);
+    const y25 = minY + (maxY - minY) * 0.25;  // 25% up the Y-axis
+    const y75 = minY + (maxY - minY) * 0.75;  // 75% up the Y-axis
+
     chart = new Chart(ctx, {
         type: "line",
         data: {
@@ -368,22 +374,15 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
                     annotations: {
                         line1: {
                             type: 'line',
-                            yMin: 200, // Position of the line
+                            yMin: 200, // Position of the horizontal line
                             yMax: 200,
-                            borderColor: 'red',
-                            borderWidth: 2,
-                            label: {
-                                display: true,
-                                content: "Herons Likely!",
-                                position: "start",
-                                backgroundColor: "rgba(255, 255, 255, 0.8)",
-                                font: { size: 14, weight: 'bold' }
-                            }
+                            borderColor: 'black',
+                            borderWidth: 2
                         },
                         heronsLikely: {
                             type: 'label',
                             xValue: timestamps[Math.floor(timestamps.length / 2)], // Center horizontally
-                            yValue: 150, // Below the line
+                            yValue: y25, // 25% up the y-axis
                             content: "Herons Likely!",
                             color: "green",
                             font: { size: 16, weight: "bold" }
@@ -391,7 +390,7 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
                         heronsUnlikely: {
                             type: 'label',
                             xValue: timestamps[Math.floor(timestamps.length / 2)], // Center horizontally
-                            yValue: 250, // Above the line
+                            yValue: y75, // 75% up the y-axis
                             content: "Herons Unlikely",
                             color: "red",
                             font: { size: 16, weight: "bold" }
@@ -413,6 +412,7 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
         }
     });
 }
+
 
 
 
