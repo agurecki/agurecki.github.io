@@ -407,14 +407,13 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
                         minRotation: 0   // Keep them horizontal
                     }
                 },
-                y: { ticks: { font: { size: 14 } } }
+                y: { ticks: { font: { size: 14 } },
+                    beginAtZero: true  // Force y-axis to start at 0
+                    }
             }
         }
     });
 }
-
-
-
 
     // Gradient effect for the graph
     function createGradient(ctx) {
