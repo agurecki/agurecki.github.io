@@ -339,12 +339,6 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
 
     if (chart) chart.destroy();
 
-    // Find the min and max Y values to calculate 25% and 75% positions
-    const minY = Math.min(...flowValues);
-    const maxY = Math.max(...flowValues);
-    const y25 = minY + (maxY - minY) * 0.25;  // 25% up the Y-axis
-    const y75 = minY + (maxY - minY) * 0.75;  // 75% up the Y-axis
-
     chart = new Chart(ctx, {
         type: "line",
         data: {
@@ -382,7 +376,7 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
                         heronsLikely: {
                             type: 'label',
                             xValue: timestamps[Math.floor(timestamps.length / 2)], // Center horizontally
-                            yValue: y25, // 25% up the y-axis
+                            yValue: 175, // Set to 175
                             content: "Herons Likely!",
                             color: "green",
                             font: { size: 16, weight: "bold" }
@@ -390,7 +384,7 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
                         heronsUnlikely: {
                             type: 'label',
                             xValue: timestamps[Math.floor(timestamps.length / 2)], // Center horizontally
-                            yValue: y75, // 75% up the y-axis
+                            yValue: 225, // Set to 225
                             content: "Herons Unlikely",
                             color: "red",
                             font: { size: 16, weight: "bold" }
@@ -402,19 +396,19 @@ function updateGraph(timestamps, flowValues, rangeLabel) {
                 x: { 
                     ticks: {
                         font: { size: 14 },
-                        autoSkip: true,  // Automatically skip labels if they overlap
-                        maxRotation: 0,  // No rotation for date labels
-                        minRotation: 0   // Keep them horizontal
+                        autoSkip: true,  
+                        maxRotation: 0,  
+                        minRotation: 0  
                     }
                 },
-                y: { ticks: { font: { size: 14 } },
+                y: { 
+                    ticks: { font: { size: 14 } },
                     beginAtZero: true  // Force y-axis to start at 0
-                    }
+                }
             }
         }
     });
 }
-
     // Gradient effect for the graph
     function createGradient(ctx) {
         let gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
